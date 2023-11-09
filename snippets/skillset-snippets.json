@@ -165,12 +165,16 @@
 	},
 	"Custom Web API Skill": {
 		"prefix": "azs-skill-custom",
-		"body": [],
+		"body": [
+
+		],
 		"description": "Creates a custom web api skill"
 	},
 	"Document Extraction Skill": {
 		"prefix": "azs-skill-document-extraction",
-		"body": [],
+		"body": [
+
+		],
 		"description": "Creates a document extraction skill"
 	},
 	"Image Analysis Skill": {
