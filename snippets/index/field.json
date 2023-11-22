@@ -1,8 +1,8 @@
 {
-    "name": "Name",
-    "type": "Edm.String",
-    "searchable": true,
-    "filterable": false,
-    "sortable": false,
-    "facetable": false
+	"name": "Name",
+	"type": "Edm.String",
+	"searchable": true,
+	"filterable": false,
+	"sortable": false,
+	"facetable": false
 }
