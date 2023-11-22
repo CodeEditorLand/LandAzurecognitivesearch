@@ -14,8 +14,8 @@
 //
 // The tests should import '../extension.bundle.ts'. At design-time they live in tests/ and so will pick up this file (extension.bundle.ts).
 // At runtime the tests live in dist/tests and will therefore pick up the main webpack bundle at dist/extension.bundle.js.
-export * from "vscode-azureextensionui";
+export * from 'vscode-azureextensionui';
 // Export activate/deactivate for main.js
-export { activateInternal, deactivateInternal } from "./src/extension";
-export { ext } from "./src/extensionVariables";
-export { AzureAccountTreeItem } from "./src/AzureAccountTreeItem";
+export { activateInternal, deactivateInternal } from './src/extension';
+export { ext } from './src/extensionVariables';
+export { AzureAccountTreeItem } from './src/AzureAccountTreeItem';
