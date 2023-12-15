@@ -2,7 +2,7 @@
 	"name": "vscode-azurecognitivesearch",
 	"displayName": "Azure Cognitive Search",
 	"version": "0.0.1",
-	"private": "false",
+	"private": false,
 	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
 	"homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
 	"bugs": {
