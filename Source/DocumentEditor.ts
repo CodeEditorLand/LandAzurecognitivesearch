@@ -21,7 +21,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await fse.remove(f);
 			} catch {
 				ext.outputChannel.appendLine(
-					`Failed to delete temporary file '${f}')`
+					`Failed to delete temporary file '${f}')`,
 				);
 			}
 		}
@@ -46,10 +46,10 @@ export class DocumentEditor implements vscode.Disposable {
 	}
 
 	public async onDidSaveTextDocument(
-		doc: vscode.TextDocument
+		doc: vscode.TextDocument,
 	): Promise<void> {
 		const filename = Object.keys(this.fileMap).find(
-			(f) => path.relative(doc.fileName, f) === ""
+			(f) => path.relative(doc.fileName, f) === "",
 		);
 		if (filename) {
 			const item = this.fileMap[filename];
@@ -57,7 +57,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await vscode.window.showWarningMessage(
 					`Saving these changes will update ${item.itemKind} '${item.itemName}'`,
 					DialogResponses.upload,
-					DialogResponses.cancel
+					DialogResponses.cancel,
 				);
 
 			if (!r || r === DialogResponses.cancel) {
@@ -78,66 +78,66 @@ export class DocumentEditor implements vscode.Disposable {
 		switch (itemKind) {
 			case "indexes":
 				return {
-					"name": "my-index",
-					"fields": [
+					name: "my-index",
+					fields: [
 						{
-							"name": "id",
-							"type": "Edm.String",
-							"key": true,
-							"searchable": true,
-							"filterable": false,
-							"facetable": false,
-							"sortable": true,
+							name: "id",
+							type: "Edm.String",
+							key: true,
+							searchable: true,
+							filterable: false,
+							facetable: false,
+							sortable: true,
 						},
 						{
-							"name": "text",
-							"type": "Edm.String",
-							"sortable": false,
-							"searchable": true,
-							"filterable": false,
-							"facetable": false,
+							name: "text",
+							type: "Edm.String",
+							sortable: false,
+							searchable: true,
+							filterable: false,
+							facetable: false,
 						},
 					],
 				};
 			case "synonym map":
 				return {
-					"name": "my-synonyms",
-					"format": "solr",
-					"synonyms":
+					name: "my-synonyms",
+					format: "solr",
+					synonyms:
 						"USA, United States, United States of America\nWashington, Wash., WA => WA\n",
 				};
 			case "data source":
 				return {
-					"name": "my-datasource",
-					"type": "",
-					"credentials": {
-						"connectionString": "",
+					name: "my-datasource",
+					type: "",
+					credentials: {
+						connectionString: "",
 					},
-					"container": {
-						"name": "",
+					container: {
+						name: "",
 					},
 				};
 			case "skillset":
 				return {
-					"name": "my-skillset",
-					"description": "",
-					"skills": [
+					name: "my-skillset",
+					description: "",
+					skills: [
 						{
-							"description":
+							description:
 								"Extract text (plain and structured) from image.",
 							"@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
-							"context": "/document/normalized_images/*",
-							"defaultLanguageCode": "en",
-							"detectOrientation": true,
-							"inputs": [
+							context: "/document/normalized_images/*",
+							defaultLanguageCode: "en",
+							detectOrientation: true,
+							inputs: [
 								{
-									"name": "image",
-									"source": "/document/normalized_images/*",
+									name: "image",
+									source: "/document/normalized_images/*",
 								},
 							],
-							"outputs": [
+							outputs: [
 								{
-									"name": "text",
+									name: "text",
 								},
 							],
 						},
@@ -145,21 +145,21 @@ export class DocumentEditor implements vscode.Disposable {
 				};
 			case "indexer":
 				return {
-					"name": "my-indexer",
-					"dataSourceName": "",
-					"targetIndexName": "",
-					"skillsetName": "",
-					"fieldMappings": [
+					name: "my-indexer",
+					dataSourceName: "",
+					targetIndexName: "",
+					skillsetName: "",
+					fieldMappings: [
 						{
-							"sourceFieldName": "",
-							"targetFieldName": "",
+							sourceFieldName: "",
+							targetFieldName: "",
 						},
 					],
 				};
 			case "alias":
 				return {
-					"name": "alias1",
-					"indexes": ["index1"],
+					name: "alias1",
+					indexes: ["index1"],
 				};
 
 			default:

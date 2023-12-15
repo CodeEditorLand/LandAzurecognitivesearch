@@ -54,7 +54,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 		const searchManagementClient = new SearchManagementClient(
 			this.root.credentials,
 			this.root.subscriptionId,
-			this.root.environment.resourceManagerEndpointUrl
+			this.root.environment.resourceManagerEndpointUrl,
 		);
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
@@ -63,12 +63,12 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const resourceManagementClient = createAzureClient(
 			this.root,
-			ResourceManagementClient.ResourceManagementClient
+			ResourceManagementClient.ResourceManagementClient,
 		);
 		const services = !this._nextLink
 			? await resourceManagementClient.resources.list({
 					filter: "resourceType eq 'Microsoft.Search/searchServices'",
-				})
+			  })
 			: await resourceManagementClient.resources.listNext(this._nextLink);
 		this._nextLink = services.nextLink;
 
@@ -79,9 +79,9 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 				await new SearchServiceTreeItem(
 					this,
 					s,
-					searchManagementClient
+					searchManagementClient,
 				),
-			(s: SearchService) => s.name
+			(s: SearchService) => s.name,
 		);
 	}
 
@@ -90,12 +90,12 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext
+		context: ICreateChildImplContext,
 	): Promise<AzureTreeItem> {
 		const searchManagementClient = new SearchManagementClient(
 			this.root.credentials,
 			this.root.subscriptionId,
-			this.root.environment.resourceManagerEndpointUrl
+			this.root.environment.resourceManagerEndpointUrl,
 		);
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
@@ -104,7 +104,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const wizardContext: ISearchServiceWizardContext = Object.assign(
 			context,
-			this.root
+			this.root,
 		);
 
 		const promptSteps: AzureWizardPromptStep<ISearchServiceWizardContext>[] =
@@ -127,20 +127,20 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const newServiceName: string = nonNullProp(
 			wizardContext,
-			"newServiceName"
+			"newServiceName",
 		);
 		context.showCreatingTreeItem(newServiceName);
 		await wizard.execute();
 
 		const newSearchService: SearchService = nonNullProp(
 			wizardContext,
-			"searchService"
+			"searchService",
 		);
 
 		return new SearchServiceTreeItem(
 			this,
 			newSearchService,
-			searchManagementClient
+			searchManagementClient,
 		);
 	}
 }

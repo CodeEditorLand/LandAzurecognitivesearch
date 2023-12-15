@@ -28,21 +28,21 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 	public async execute(wizardContext: T): Promise<void> {
 		const newServiceName: string = nonNullProp(
 			wizardContext,
-			"newServiceName"
+			"newServiceName",
 		);
 		const skuName: string = nonNullProp(wizardContext, "sku");
 		const locationName: string = nonNullProp(
 			nonNullProp(wizardContext, "location"),
-			"name"
+			"name",
 		);
 		const rgName: string = nonNullProp(
 			nonNullProp(wizardContext, "resourceGroup"),
-			"name"
+			"name",
 		);
 		const replicaCount: number = nonNullProp(wizardContext, "replicaCount");
 		const partitionCount: number = nonNullProp(
 			wizardContext,
-			"partitionCount"
+			"partitionCount",
 		);
 
 		const creatingSearchService: string = `Creating search serivce "${newServiceName}" in location "${locationName}" with sku "${skuName}"...`;
@@ -61,7 +61,7 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 			await searchManagementClient.services.beginCreateOrUpdate(
 				rgName,
 				newServiceName,
-				newSearchService
+				newSearchService,
 			);
 
 		const createdSearchService: string = `Successfully created search service "${newServiceName}".`;

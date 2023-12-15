@@ -11,7 +11,7 @@ import { SubscriptionTreeItem } from "./SubscriptionTreeItem";
 
 export class AzureAccountTreeItem extends AzureAccountTreeItemBase {
 	public createSubscriptionTreeItem(
-		root: ISubscriptionContext
+		root: ISubscriptionContext,
 	): SubscriptionTreeItem {
 		return new SubscriptionTreeItem(this, root);
 	}

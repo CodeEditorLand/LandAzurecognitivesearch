@@ -24,9 +24,9 @@ async function prepareForWebpack(): Promise<void> {
 }
 
 exports["webpack-dev"] = gulp.series(prepareForWebpack, () =>
-	gulp_webpack("development")
+	gulp_webpack("development"),
 );
 exports["webpack-prod"] = gulp.series(prepareForWebpack, () =>
-	gulp_webpack("production")
+	gulp_webpack("production"),
 );
 exports.preTest = gulp_installAzureAccount;

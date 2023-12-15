@@ -18,7 +18,7 @@ export class IndexerListTreeItem extends SearchResourceListTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		searchClient: SimpleSearchClient
+		searchClient: SimpleSearchClient,
 	) {
 		super(
 			parent,
@@ -28,7 +28,7 @@ export class IndexerListTreeItem extends SearchResourceListTreeItem {
 			SimpleSearchClient.Indexers,
 			"indexer",
 			"azsindexer",
-			searchClient
+			searchClient,
 		);
 	}
 

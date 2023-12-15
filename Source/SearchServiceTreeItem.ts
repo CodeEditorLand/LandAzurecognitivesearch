@@ -41,7 +41,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 	public constructor(
 		parent: AzureParentTreeItem,
 		public readonly searchService: SearchService,
-		public readonly searchManagementClient: SearchManagementClient
+		public readonly searchManagementClient: SearchManagementClient,
 	) {
 		super(parent);
 		this.resourceGroup = (<string>this.searchService.id).split("/")[4];
@@ -55,12 +55,12 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext
+		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		const keys = await this.getAdminKeys();
 		const searchClient = new SimpleSearchClient(
 			this.name,
-			<string>keys.primaryKey
+			<string>keys.primaryKey,
 		);
 
 		return [
@@ -80,7 +80,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 
 	public compareChildrenImpl(
 		item1: AzExtTreeItem,
-		item2: AzExtTreeItem
+		item2: AzExtTreeItem,
 	): number {
 		return (
 			SearchServiceTreeItem.getTreeItemPosition(item1) -
@@ -112,7 +112,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 	public async getAdminKeys(): Promise<AdminKeyResult> {
 		const keys = await this.searchManagementClient.adminKeys.get(
 			this.resourceGroup,
-			this.name
+			this.name,
 		);
 		return keys;
 	}
@@ -122,7 +122,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 		const key = await this.searchManagementClient.queryKeys.create(
 			this.resourceGroup,
 			this.name,
-			keyName
+			keyName,
 		);
 		return key;
 	}
@@ -131,7 +131,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 		const keys =
 			await this.searchManagementClient.queryKeys.listBySearchService(
 				this.resourceGroup,
-				this.name
+				this.name,
 			);
 		if (keys.length === 0) {
 			return this.createQueryKey();
@@ -143,7 +143,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 	public async deleteTreeItemImpl(): Promise<void> {
 		await this.searchManagementClient.services.deleteMethod(
 			this.resourceGroup,
-			this.name
+			this.name,
 		);
 	}
 

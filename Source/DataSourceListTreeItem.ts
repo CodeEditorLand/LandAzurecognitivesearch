@@ -18,7 +18,7 @@ export class DataSourceListTreeItem extends SearchResourceListTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		searchClient: SimpleSearchClient
+		searchClient: SimpleSearchClient,
 	) {
 		super(
 			parent,
@@ -28,7 +28,7 @@ export class DataSourceListTreeItem extends SearchResourceListTreeItem {
 			SimpleSearchClient.DataSources,
 			"data source",
 			"azsds",
-			searchClient
+			searchClient,
 		);
 	}
 

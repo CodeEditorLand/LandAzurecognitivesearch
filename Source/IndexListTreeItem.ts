@@ -30,19 +30,19 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		private readonly searchClient: SimpleSearchClient
+		private readonly searchClient: SimpleSearchClient,
 	) {
 		super(parent);
 	}
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext
+		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		// TODO: does the /indexes endpoint ever return a continuation link? I don't think so.
 		let indexes: Index[] = await this.searchClient.listIndexes();
 		return indexes.map(
-			(i) => new IndexTreeItem(this, this.searchClient, i)
+			(i) => new IndexTreeItem(this, this.searchClient, i),
 		);
 	}
 
@@ -51,7 +51,7 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext
+		context: ICreateChildImplContext,
 	): Promise<EditableResourceTreeItem> {
 		return this.makeItem();
 	}
@@ -70,7 +70,7 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 			IndexListTreeItem.extension,
 			creating,
 			this.searchClient,
-			label
+			label,
 		);
 	}
 

@@ -24,7 +24,7 @@ export class ServiceDetailsTreeItem
 
 	public constructor(
 		parent: AzureParentTreeItem,
-		private readonly searchService: SearchService
+		private readonly searchService: SearchService,
 	) {
 		super(parent);
 		this.itemName = searchService.name || "";
@@ -44,7 +44,7 @@ export class ServiceDetailsTreeItem
 
 	async updateContent(
 		content: any,
-		etag?: string | undefined
+		etag?: string | undefined,
 	): Promise<void> {
 		throw new Error("Updating service details not supported.");
 	}
