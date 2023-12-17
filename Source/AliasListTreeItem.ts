@@ -18,7 +18,7 @@ export class AliasListTreeItem extends SearchResourceListTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		searchClient: SimpleSearchClient,
+		searchClient: SimpleSearchClient
 	) {
 		super(
 			parent,
@@ -28,7 +28,7 @@ export class AliasListTreeItem extends SearchResourceListTreeItem {
 			SimpleSearchClient.Aliases,
 			"alias",
 			"azsalias",
-			searchClient,
+			searchClient
 		);
 	}
 

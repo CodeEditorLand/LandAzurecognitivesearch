@@ -18,7 +18,7 @@ export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		searchClient: SimpleSearchClient,
+		searchClient: SimpleSearchClient
 	) {
 		super(
 			parent,
@@ -28,7 +28,7 @@ export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 			SimpleSearchClient.Skillsets,
 			"skillset",
 			"azsskset",
-			searchClient,
+			searchClient
 		);
 	}
 

@@ -20,7 +20,7 @@ export class SearchServiceNameStep<
 	public async prompt(wizardContext: T): Promise<void> {
 		const client: SearchManagementClient = createAzureClient(
 			wizardContext,
-			SearchManagementClient,
+			SearchManagementClient
 		);
 
 		const suggestedName: string | undefined = wizardContext.relatedNameTask
@@ -31,7 +31,7 @@ export class SearchServiceNameStep<
 				value: suggestedName,
 				prompt: "Enter a globally unique name for the new Search Service",
 				validateInput: async (
-					value: string,
+					value: string
 				): Promise<string | undefined> =>
 					await this.validateSearchServiceName(client, value),
 			})
@@ -40,7 +40,7 @@ export class SearchServiceNameStep<
 			wizardContext.relatedNameTask = this.generateRelatedName(
 				wizardContext,
 				wizardContext.newServiceName,
-				resourceGroupNamingRules,
+				resourceGroupNamingRules
 			);
 		}
 	}
@@ -51,14 +51,14 @@ export class SearchServiceNameStep<
 
 	protected async isRelatedNameAvailable(
 		wizardContext: T,
-		name: string,
+		name: string
 	): Promise<boolean> {
 		return await ResourceGroupListStep.isNameAvailable(wizardContext, name);
 	}
 
 	private async validateSearchServiceName(
 		client: SearchManagementClient,
-		name: string,
+		name: string
 	): Promise<string | undefined> {
 		name = name ? name.trim() : "";
 

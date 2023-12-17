@@ -20,7 +20,7 @@ export class SimpleSearchClient {
 	public constructor(
 		public readonly serviceName: string,
 		private readonly apikey: string,
-		private readonly cloudSuffix?: string | undefined,
+		private readonly cloudSuffix?: string | undefined
 	) {
 		this.userAgent = appendExtensionUserAgent();
 	}
@@ -28,7 +28,7 @@ export class SimpleSearchClient {
 	public async listIndexes(): Promise<Index[]> {
 		let r = await this.httpGet<CollectionResponse<Index>>(
 			"indexes",
-			"$select=name,fields",
+			"$select=name,fields"
 		);
 		return r.data.value;
 	}
@@ -36,14 +36,14 @@ export class SimpleSearchClient {
 	public async listResources(resource: string): Promise<string[]> {
 		let r = await this.httpGet<CollectionResponse<NamedItem>>(
 			resource,
-			"$select=name",
+			"$select=name"
 		);
 		return r.data.value.map((i) => i.name);
 	}
 
 	public async getResource(
 		resource: string,
-		name: string,
+		name: string
 	): Promise<{ content: any; etag: string }> {
 		let r = await this.httpGet<any>(`${resource}/${name}`);
 		return { content: r.data, etag: r.headers["etag"] };
@@ -51,7 +51,7 @@ export class SimpleSearchClient {
 
 	public async createResource(
 		resource: string,
-		content: any,
+		content: any
 	): Promise<{ content: any; etag: any }> {
 		let r = await this.httpPost(resource, content);
 		return { content: r.data, etag: r.headers["etag"] };
@@ -61,7 +61,7 @@ export class SimpleSearchClient {
 		resource: string,
 		name: string,
 		content: any,
-		etag?: string,
+		etag?: string
 	): Promise<void> {
 		return this.httpPut(`${resource}/${name}`, content, etag);
 	}
@@ -81,7 +81,7 @@ export class SimpleSearchClient {
 	public async query(
 		indexName: string,
 		query: string,
-		raw: boolean = false,
+		raw: boolean = false
 	): Promise<QueryResponse> {
 		let r = await this.httpGet(`indexes/${indexName}/docs`, query);
 		if (!raw) {
@@ -93,11 +93,11 @@ export class SimpleSearchClient {
 	public async queryPost(
 		indexName: string,
 		query: string,
-		raw: boolean = false,
+		raw: boolean = false
 	): Promise<QueryResponse> {
 		let r = await this.httpPost(
 			`indexes/${indexName}/docs/search`,
-			JSON.parse(query),
+			JSON.parse(query)
 		);
 		if (!raw) {
 			this.fixupQueryResponse(r.data);
@@ -120,7 +120,7 @@ export class SimpleSearchClient {
 	public async uploadDocument(
 		indexName: string,
 		doc: any,
-		createNew: boolean,
+		createNew: boolean
 	): Promise<void> {
 		const shallowCopy = { ...doc };
 		shallowCopy["@search.action"] = createNew ? "mergeOrUpload" : "merge";
@@ -132,7 +132,7 @@ export class SimpleSearchClient {
 	public async deleteDocument(
 		indexName: string,
 		keyName: string,
-		key: any,
+		key: any
 	): Promise<void> {
 		const deletion: any = {};
 		deletion["@search.action"] = "delete";
@@ -144,7 +144,7 @@ export class SimpleSearchClient {
 
 	private async indexBatch(
 		indexName: string,
-		batch: { value: any },
+		batch: { value: any }
 	): Promise<void> {
 		let batchResponse: CollectionResponse<BatchResponseEntry>;
 
@@ -155,21 +155,19 @@ export class SimpleSearchClient {
 			batchResponse = r.data;
 		} catch (error) {
 			throw new Error(
-				`Failed to process document: ${this.extractErrorMessage(
-					error,
-				)}`,
+				`Failed to process document: ${this.extractErrorMessage(error)}`
 			);
 		}
 
 		if (batchResponse.value.length !== 1) {
 			throw new Error(
-				"Unexpected response from service while attempting to process document",
+				"Unexpected response from service while attempting to process document"
 			);
 		}
 
 		if (!batchResponse.value[0].status) {
 			throw new Error(
-				`Failed to process document: ${batchResponse.value[0].errorMessage}`,
+				`Failed to process document: ${batchResponse.value[0].errorMessage}`
 			);
 		}
 	}
@@ -194,13 +192,13 @@ export class SimpleSearchClient {
 
 	private httpGet<T = any, R = AxiosResponse<T>>(
 		path: string,
-		queryString: string = "",
+		queryString: string = ""
 	): Promise<R> {
 		return this.httpGetUrl(this.makeUrl(path, queryString));
 	}
 
 	private async httpGetUrl<T = any, R = AxiosResponse<T>>(
-		url: string,
+		url: string
 	): Promise<R> {
 		try {
 			return await Axios.get<T, R>(url, this.makeRequestConfig());
@@ -211,13 +209,13 @@ export class SimpleSearchClient {
 
 	private async httpPost<T = any, R = AxiosResponse<T>>(
 		path: string,
-		data: any,
+		data: any
 	): Promise<R> {
 		try {
 			return await Axios.post<T, R>(
 				this.makeUrl(path),
 				data,
-				this.makeRequestConfig(),
+				this.makeRequestConfig()
 			);
 		} catch (error) {
 			throw new Error(this.extractErrorMessage(error));
@@ -227,7 +225,7 @@ export class SimpleSearchClient {
 	private async httpPut<T = any, R = AxiosResponse<T>>(
 		path: string,
 		data: any,
-		etag?: string,
+		etag?: string
 	): Promise<R> {
 		try {
 			const config = this.makeRequestConfig();
@@ -244,7 +242,7 @@ export class SimpleSearchClient {
 		try {
 			return await Axios.delete(
 				this.makeUrl(path),
-				this.makeRequestConfig(),
+				this.makeRequestConfig()
 			);
 		} catch (error) {
 			throw new Error(this.extractErrorMessage(error));

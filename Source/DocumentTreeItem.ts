@@ -30,7 +30,7 @@ export class DocumentTreeItem
 		parent: DocumentListTreeItem,
 		private readonly searchClient: SimpleSearchClient,
 		public readonly index: Index,
-		public key: any,
+		public key: any
 	) {
 		super(parent);
 		this.label = key || "<new document>";
@@ -59,7 +59,7 @@ export class DocumentTreeItem
 
 		const c = await this.searchClient.lookupDocument(
 			this.index.name,
-			this.key,
+			this.key
 		);
 
 		return { content: c, etag: undefined };
@@ -82,7 +82,7 @@ export class DocumentTreeItem
 			await this.searchClient.deleteDocument(
 				this.index.name,
 				keyField.name,
-				this.key,
+				this.key
 			);
 		}
 	}
@@ -90,7 +90,7 @@ export class DocumentTreeItem
 	private async getSchema(): Promise<string> {
 		var indexSchema = await this.searchClient.getResource(
 			"indexes",
-			this.index.name,
+			this.index.name
 		);
 
 		var jsonSchema = this.mapFields(indexSchema.content.fields);

@@ -22,18 +22,18 @@ export class SearchResourceListTreeItem extends AzureParentTreeItem {
 		private readonly itemSet: string,
 		private readonly itemKind: string,
 		private readonly extension: string,
-		private readonly searchClient: SimpleSearchClient,
+		private readonly searchClient: SimpleSearchClient
 	) {
 		super(parent);
 	}
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext,
+		context: IActionContext
 	): Promise<AzExtTreeItem[]> {
 		// TODO: do the non-search collections endpoints ever return a continuation link? I don't think so.
 		let resources: string[] = await this.searchClient.listResources(
-			this.itemSet,
+			this.itemSet
 		);
 		return resources.map((r) => this.makeItem(r));
 	}
@@ -43,7 +43,7 @@ export class SearchResourceListTreeItem extends AzureParentTreeItem {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext,
+		context: ICreateChildImplContext
 	): Promise<EditableResourceTreeItem> {
 		return this.makeItem();
 	}
@@ -62,7 +62,7 @@ export class SearchResourceListTreeItem extends AzureParentTreeItem {
 			this.extension,
 			creating,
 			this.searchClient,
-			label,
+			label
 		);
 	}
 }

@@ -12,7 +12,7 @@ import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServicePartitionStep extends AzureWizardPromptStep<ISearchServiceWizardContext> {
 	public async prompt(
-		wizardContext: ISearchServiceWizardContext,
+		wizardContext: ISearchServiceWizardContext
 	): Promise<void> {
 		const placeHolder: string =
 			"Select the partition count for your search service";
@@ -33,7 +33,7 @@ export class SearchServicePartitionStep extends AzureWizardPromptStep<ISearchSer
 	}
 
 	public async getPicks(
-		wizardContext: ISearchServiceWizardContext,
+		wizardContext: ISearchServiceWizardContext
 	): Promise<IAzureQuickPickItem<number>[]> {
 		if (wizardContext.replicaCount && wizardContext.replicaCount <= 3) {
 			return [

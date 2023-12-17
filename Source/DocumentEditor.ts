@@ -21,7 +21,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await fse.remove(f);
 			} catch {
 				ext.outputChannel.appendLine(
-					`Failed to delete temporary file '${f}')`,
+					`Failed to delete temporary file '${f}')`
 				);
 			}
 		}
@@ -46,10 +46,10 @@ export class DocumentEditor implements vscode.Disposable {
 	}
 
 	public async onDidSaveTextDocument(
-		doc: vscode.TextDocument,
+		doc: vscode.TextDocument
 	): Promise<void> {
 		const filename = Object.keys(this.fileMap).find(
-			(f) => path.relative(doc.fileName, f) === "",
+			(f) => path.relative(doc.fileName, f) === ""
 		);
 		if (filename) {
 			const item = this.fileMap[filename];
@@ -57,7 +57,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await vscode.window.showWarningMessage(
 					`Saving these changes will update ${item.itemKind} '${item.itemName}'`,
 					DialogResponses.upload,
-					DialogResponses.cancel,
+					DialogResponses.cancel
 				);
 
 			if (!r || r === DialogResponses.cancel) {

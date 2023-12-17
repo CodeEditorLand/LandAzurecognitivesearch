@@ -31,7 +31,7 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 	public constructor(
 		parent: IndexTreeItem,
 		private readonly searchClient: SimpleSearchClient,
-		public readonly index: Index,
+		public readonly index: Index
 	) {
 		super(parent);
 	}
@@ -43,7 +43,7 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext,
+		context: IActionContext
 	): Promise<AzExtTreeItem[]> {
 		let result: QueryResponse;
 		let key: Field = <Field>this.index.fields.find((f) => f.key);
@@ -51,7 +51,7 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 		if (clearCache || !this.nextLink) {
 			result = await this.searchClient.query(
 				this.index.name,
-				`$select=${key.name}`,
+				`$select=${key.name}`
 			);
 		} else {
 			result = await this.searchClient.queryNext(this.nextLink);
@@ -65,8 +65,8 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 					this,
 					this.searchClient,
 					this.index,
-					doc[key.name],
-				),
+					doc[key.name]
+				)
 		);
 	}
 
@@ -75,13 +75,13 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext,
+		context: ICreateChildImplContext
 	): Promise<DocumentTreeItem> {
 		return new DocumentTreeItem(
 			this,
 			this.searchClient,
 			this.index,
-			undefined,
+			undefined
 		);
 	}
 }

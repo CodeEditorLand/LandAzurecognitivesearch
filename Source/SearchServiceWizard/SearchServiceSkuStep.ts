@@ -12,7 +12,7 @@ import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceSkuStep extends AzureWizardPromptStep<ISearchServiceWizardContext> {
 	public async prompt(
-		wizardContext: ISearchServiceWizardContext,
+		wizardContext: ISearchServiceWizardContext
 	): Promise<void> {
 		const placeHolder: string = "Select the SKU for your search service";
 		wizardContext.sku = (
@@ -27,7 +27,7 @@ export class SearchServiceSkuStep extends AzureWizardPromptStep<ISearchServiceWi
 	}
 
 	public async getPicks(
-		wizardContext: ISearchServiceWizardContext,
+		wizardContext: ISearchServiceWizardContext
 	): Promise<IAzureQuickPickItem<string>[]> {
 		return [
 			{ label: "Free", data: "free" },
