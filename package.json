@@ -494,7 +494,7 @@
 		"@types/glob": "8.1.0",
 		"@types/gulp": "4.0.17",
 		"@types/mocha": "10.0.6",
-		"@types/node": "20.10.4",
+		"@types/node": "20.10.5",
 		"@types/vscode": "1.85.0",
 		"copy-webpack-plugin": "11.0.0",
 		"file-loader": "6.2.0",
