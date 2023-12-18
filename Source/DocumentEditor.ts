@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from "vscode";
+import * as crypto from "crypto";
 import * as os from "os";
 import * as path from "path";
-import * as crypto from "crypto";
 import * as fse from "fs-extra";
-import { ext } from "./extensionVariables";
+import * as vscode from "vscode";
 import { DialogResponses, UserCancelledError } from "vscode-azureextensionui";
 import { IDocumentRepository } from "./IDocumentRepository";
+import { ext } from "./extensionVariables";
 
 export class DocumentEditor implements vscode.Disposable {
 	private fileMap: { [key: string]: IDocumentRepository } = {};
@@ -21,7 +21,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await fse.remove(f);
 			} catch {
 				ext.outputChannel.appendLine(
-					`Failed to delete temporary file '${f}')`
+					`Failed to delete temporary file '${f}')`,
 				);
 			}
 		}
@@ -46,10 +46,10 @@ export class DocumentEditor implements vscode.Disposable {
 	}
 
 	public async onDidSaveTextDocument(
-		doc: vscode.TextDocument
+		doc: vscode.TextDocument,
 	): Promise<void> {
 		const filename = Object.keys(this.fileMap).find(
-			(f) => path.relative(doc.fileName, f) === ""
+			(f) => path.relative(doc.fileName, f) === "",
 		);
 		if (filename) {
 			const item = this.fileMap[filename];
@@ -57,7 +57,7 @@ export class DocumentEditor implements vscode.Disposable {
 				await vscode.window.showWarningMessage(
 					`Saving these changes will update ${item.itemKind} '${item.itemName}'`,
 					DialogResponses.upload,
-					DialogResponses.cancel
+					DialogResponses.cancel,
 				);
 
 			if (!r || r === DialogResponses.cancel) {

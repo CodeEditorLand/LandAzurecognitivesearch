@@ -3,46 +3,45 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as path from "path";
+import { Uri } from "vscode";
 import {
+	AzExtTreeItem,
 	AzureParentTreeItem,
 	IActionContext,
-	AzExtTreeItem,
-	GenericTreeItem,
 	ICreateChildImplContext,
 } from "vscode-azureextensionui";
-import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { SimpleSearchClient, Index } from "./SimpleSearchClient";
-import { IndexTreeItem } from "./IndexTreeItem";
-import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
-import * as path from "path";
 import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
+import { IndexTreeItem } from "./IndexTreeItem";
+import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
+import { Index, SimpleSearchClient } from "./SimpleSearchClient";
+import { getResourcesPath } from "./constants";
 
 export class IndexListTreeItem extends AzureParentTreeItem {
-	public static contextValue: string = "azureCognitiveSearchIndexList";
+	public static contextValue = "azureCognitiveSearchIndexList";
 	public readonly contextValue: string = IndexListTreeItem.contextValue;
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchIndex";
 	public static readonly itemSet: string = "indexes";
 	public static readonly itemKind: string = "indexes";
 	public static readonly extension: string = "azsindex";
-	public label: string = "Indexes";
+	public label = "Indexes";
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		private readonly searchClient: SimpleSearchClient
+		private readonly searchClient: SimpleSearchClient,
 	) {
 		super(parent);
 	}
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext
+		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		// TODO: does the /indexes endpoint ever return a continuation link? I don't think so.
-		let indexes: Index[] = await this.searchClient.listIndexes();
+		const indexes: Index[] = await this.searchClient.listIndexes();
 		return indexes.map(
-			(i) => new IndexTreeItem(this, this.searchClient, i)
+			(i) => new IndexTreeItem(this, this.searchClient, i),
 		);
 	}
 
@@ -51,7 +50,7 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext
+		context: ICreateChildImplContext,
 	): Promise<EditableResourceTreeItem> {
 		return this.makeItem();
 	}
@@ -70,7 +69,7 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 			IndexListTreeItem.extension,
 			creating,
 			this.searchClient,
-			label
+			label,
 		);
 	}
 

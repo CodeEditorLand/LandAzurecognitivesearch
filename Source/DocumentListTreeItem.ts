@@ -3,23 +3,23 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as path from "path";
+import { Uri } from "vscode";
 import {
+	AzExtTreeItem,
 	AzureParentTreeItem,
 	IActionContext,
-	AzExtTreeItem,
 	ICreateChildImplContext,
 } from "vscode-azureextensionui";
-import {
-	SimpleSearchClient,
-	QueryResponse,
-	Index,
-	Field,
-} from "./SimpleSearchClient";
-import { IndexTreeItem } from "./IndexTreeItem";
 import { DocumentTreeItem } from "./DocumentTreeItem";
+import { IndexTreeItem } from "./IndexTreeItem";
+import {
+	Field,
+	Index,
+	QueryResponse,
+	SimpleSearchClient,
+} from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
-import * as path from "path";
 
 export class DocumentListTreeItem extends AzureParentTreeItem {
 	public static readonly contextValue: string =
@@ -31,7 +31,7 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 	public constructor(
 		parent: IndexTreeItem,
 		private readonly searchClient: SimpleSearchClient,
-		public readonly index: Index
+		public readonly index: Index,
 	) {
 		super(parent);
 	}
@@ -43,15 +43,15 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext
+		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		let result: QueryResponse;
-		let key: Field = <Field>this.index.fields.find((f) => f.key);
+		const key: Field = <Field>this.index.fields.find((f) => f.key);
 
 		if (clearCache || !this.nextLink) {
 			result = await this.searchClient.query(
 				this.index.name,
-				`$select=${key.name}`
+				`$select=${key.name}`,
 			);
 		} else {
 			result = await this.searchClient.queryNext(this.nextLink);
@@ -65,8 +65,8 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 					this,
 					this.searchClient,
 					this.index,
-					doc[key.name]
-				)
+					doc[key.name],
+				),
 		);
 	}
 
@@ -75,13 +75,13 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext
+		context: ICreateChildImplContext,
 	): Promise<DocumentTreeItem> {
 		return new DocumentTreeItem(
 			this,
 			this.searchClient,
 			this.index,
-			undefined
+			undefined,
 		);
 	}
 }

@@ -3,12 +3,12 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as path from "path";
+import { Uri } from "vscode";
+import { SearchResourceListTreeItem } from "./SearchResourceListTreeItem";
 import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
 import { SimpleSearchClient } from "./SimpleSearchClient";
-import { SearchResourceListTreeItem } from "./SearchResourceListTreeItem";
 import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
-import * as path from "path";
 
 export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
@@ -18,7 +18,7 @@ export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 
 	public constructor(
 		parent: SearchServiceTreeItem,
-		searchClient: SimpleSearchClient
+		searchClient: SimpleSearchClient,
 	) {
 		super(
 			parent,
@@ -28,7 +28,7 @@ export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 			SimpleSearchClient.Skillsets,
 			"skillset",
 			"azsskset",
-			searchClient
+			searchClient,
 		);
 	}
 

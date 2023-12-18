@@ -3,14 +3,13 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as path from "path";
+import { Uri } from "vscode";
 import { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
-import { SimpleSearchClient, Index, Field } from "./SimpleSearchClient";
 import { DocumentListTreeItem } from "./DocumentListTreeItem";
 import { IDocumentRepository } from "./IDocumentRepository";
+import { Field, Index, SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
-import { Uri, Range } from "vscode";
-import * as path from "path";
-import { EDOM } from "constants";
 
 export class DocumentTreeItem
 	extends AzureTreeItem
@@ -30,7 +29,7 @@ export class DocumentTreeItem
 		parent: DocumentListTreeItem,
 		private readonly searchClient: SimpleSearchClient,
 		public readonly index: Index,
-		public key: any
+		public key: any,
 	) {
 		super(parent);
 		this.label = key || "<new document>";
@@ -59,7 +58,7 @@ export class DocumentTreeItem
 
 		const c = await this.searchClient.lookupDocument(
 			this.index.name,
-			this.key
+			this.key,
 		);
 
 		return { content: c, etag: undefined };
@@ -82,7 +81,7 @@ export class DocumentTreeItem
 			await this.searchClient.deleteDocument(
 				this.index.name,
 				keyField.name,
-				this.key
+				this.key,
 			);
 		}
 	}
@@ -90,7 +89,7 @@ export class DocumentTreeItem
 	private async getSchema(): Promise<string> {
 		var indexSchema = await this.searchClient.getResource(
 			"indexes",
-			this.index.name
+			this.index.name,
 		);
 
 		var jsonSchema = this.mapFields(indexSchema.content.fields);
@@ -100,7 +99,7 @@ export class DocumentTreeItem
 
 	private mapFields(fields: Array<any>): any {
 		var jsonSchema: any = {};
-		for (let field of fields) {
+		for (const field of fields) {
 			if (field.type == "Collection(Edm.ComplexType)") {
 				jsonSchema[field.name] = [this.mapFields(field.fields)];
 			} else if (field.type == "Edm.ComplexType") {

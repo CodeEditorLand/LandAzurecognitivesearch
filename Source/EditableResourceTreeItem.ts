@@ -3,16 +3,15 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as path from "path";
 import {
-	AzureTreeItem,
 	AzureParentTreeItem,
+	AzureTreeItem,
 	IActionContext,
 } from "vscode-azureextensionui";
 import { IDocumentRepository } from "./IDocumentRepository";
 import { SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
-import * as path from "path";
 
 export class EditableResourceTreeItem
 	extends AzureTreeItem
@@ -31,7 +30,7 @@ export class EditableResourceTreeItem
 		public readonly extension: string,
 		private creating: boolean,
 		private readonly searchClient: SimpleSearchClient,
-		label?: string
+		label?: string,
 	) {
 		super(parent);
 		this.namePrefix = `${itemSet}-${itemName}`;
@@ -91,7 +90,7 @@ export class EditableResourceTreeItem
 
 		const r = await this.searchClient.getResource(
 			this.itemSet,
-			this.itemName
+			this.itemName,
 		);
 		delete r.content["@odata.context"];
 		delete r.content["@odata.etag"];
@@ -101,12 +100,12 @@ export class EditableResourceTreeItem
 
 	async updateContent(
 		content: any,
-		etag?: string | undefined
+		etag?: string | undefined,
 	): Promise<void> {
 		if (this.creating) {
 			const created = await this.searchClient.createResource(
 				this.itemSet,
-				content
+				content,
 			);
 			this.creating = false;
 			this.itemName = created.content.name;
@@ -123,7 +122,7 @@ export class EditableResourceTreeItem
 				this.itemSet,
 				this.itemName,
 				content,
-				etag
+				etag,
 			);
 		}
 	}

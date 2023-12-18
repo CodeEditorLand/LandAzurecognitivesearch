@@ -7,19 +7,19 @@ import {
 	SearchManagementClient,
 	SearchManagementModels,
 } from "azure-arm-search";
-import { nonNullProp } from "../utils/nonNull";
 import {
 	AzureWizardExecuteStep,
 	createAzureClient,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
+import { nonNullProp } from "../utils/nonNull";
 import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 	extends AzureWizardExecuteStep<T>
 	implements SearchServiceCreateStep<T>
 {
-	public priority: number = 130;
+	public priority = 130;
 
 	public constructor() {
 		super();
@@ -28,21 +28,21 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 	public async execute(wizardContext: T): Promise<void> {
 		const newServiceName: string = nonNullProp(
 			wizardContext,
-			"newServiceName"
+			"newServiceName",
 		);
 		const skuName: string = nonNullProp(wizardContext, "sku");
 		const locationName: string = nonNullProp(
 			nonNullProp(wizardContext, "location"),
-			"name"
+			"name",
 		);
 		const rgName: string = nonNullProp(
 			nonNullProp(wizardContext, "resourceGroup"),
-			"name"
+			"name",
 		);
 		const replicaCount: number = nonNullProp(wizardContext, "replicaCount");
 		const partitionCount: number = nonNullProp(
 			wizardContext,
-			"partitionCount"
+			"partitionCount",
 		);
 
 		const creatingSearchService: string = `Creating search serivce "${newServiceName}" in location "${locationName}" with sku "${skuName}"...`;
@@ -61,7 +61,7 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 			await searchManagementClient.services.beginCreateOrUpdate(
 				rgName,
 				newServiceName,
-				newSearchService
+				newSearchService,
 			);
 
 		const createdSearchService: string = `Successfully created search service "${newServiceName}".`;

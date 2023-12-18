@@ -3,50 +3,49 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as crypto from "crypto";
+import * as fs from "fs";
+import * as os from "os";
+import * as path from "path";
+import * as fse from "fs-extra";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import * as fs from "fs";
-import * as fse from "fs-extra";
-import * as path from "path";
-import * as os from "os";
-import { ext } from "./extensionVariables";
 import {
-	AzureUserInput,
-	registerUIExtensionVariables,
-	callWithTelemetryAndErrorHandling,
 	AzExtTreeDataProvider,
-	IActionContext,
 	AzExtTreeItem,
-	registerCommand,
-	createApiProvider,
-	AzureTreeItem,
-	openInPortal,
-	registerEvent,
-	DialogResponses,
 	AzureParentTreeItem,
-	createAzExtOutputChannel,
+	AzureTreeItem,
+	AzureUserInput,
+	DialogResponses,
+	IActionContext,
 	ITreeItemPickerContext,
+	callWithTelemetryAndErrorHandling,
+	createApiProvider,
+	createAzExtOutputChannel,
+	openInPortal,
+	registerCommand,
+	registerEvent,
+	registerUIExtensionVariables,
 } from "vscode-azureextensionui";
+import TelemetryReporter from "vscode-extension-telemetry";
+import { AliasListTreeItem } from "./AliasListTreeItem";
 import { AzureAccountTreeItem } from "./AzureAccountTreeItem";
-import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { DocumentTreeItem } from "./DocumentTreeItem";
+import { DataSourceListTreeItem } from "./DataSourceListTreeItem";
 import { DocumentEditor } from "./DocumentEditor";
 import { DocumentListTreeItem } from "./DocumentListTreeItem";
-import { IndexTreeItem } from "./IndexTreeItem";
-import { SearchResultDocumentProvider } from "./SearchResultDocumentProvider";
-import { IDocumentRepository } from "./IDocumentRepository";
-import { DataSourceListTreeItem } from "./DataSourceListTreeItem";
+import { DocumentTreeItem } from "./DocumentTreeItem";
 import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
-import { IndexerListTreeItem } from "./IndexerListTreeItem";
+import { IDocumentRepository } from "./IDocumentRepository";
 import { IndexListTreeItem } from "./IndexListTreeItem";
+import { IndexTreeItem } from "./IndexTreeItem";
+import { IndexerListTreeItem } from "./IndexerListTreeItem";
+import { SearchResultDocumentProvider } from "./SearchResultDocumentProvider";
+import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
 import { SkillsetListTreeItem } from "./SkillsetListTreeItem";
-import { SynonymMapListTreeItem } from "./SynonymMapListTreeItem";
-import { AliasListTreeItem } from "./AliasListTreeItem";
-import TelemetryReporter from "vscode-extension-telemetry";
-import { tree } from "gulp";
-import * as crypto from "crypto";
 import { SubscriptionTreeItem } from "./SubscriptionTreeItem";
+import { SynonymMapListTreeItem } from "./SynonymMapListTreeItem";
+import { ext } from "./extensionVariables";
 
 function readJson(path: string) {
 	const json = fs.readFileSync(path, "utf8");
@@ -62,14 +61,14 @@ function getRandomSuffix(): string {
 // your extension is activated the very first time the command is executed
 export async function activateInternal(
 	context: vscode.ExtensionContext,
-	perfStats: { loadStartTime: number; loadEndTime: number }
+	perfStats: { loadStartTime: number; loadEndTime: number },
 ) {
 	ext.context = context;
 
 	let reporter: TelemetryReporter | undefined;
 	try {
 		const { aiKey, name, version } = readJson(
-			context.asAbsolutePath("./package.json")
+			context.asAbsolutePath("./package.json"),
 		);
 		reporter = new TelemetryReporter(name, version, aiKey);
 		ext.reporter = reporter;
@@ -79,7 +78,7 @@ export async function activateInternal(
 	ext.ui = new AzureUserInput(context.globalState);
 	ext.outputChannel = createAzExtOutputChannel(
 		"Azure Cognitive Search",
-		ext.prefix
+		ext.prefix,
 	);
 	context.subscriptions.push(ext.outputChannel);
 	registerUIExtensionVariables(ext);
@@ -95,11 +94,11 @@ export async function activateInternal(
 			context.subscriptions.push(azureAccountTreeItem);
 			ext.tree = new AzExtTreeDataProvider(
 				azureAccountTreeItem,
-				"azureCognitiveSearch.loadMore"
+				"azureCognitiveSearch.loadMore",
 			);
 			ext.treeView = vscode.window.createTreeView(
 				"azureCognitiveSearch",
-				{ treeDataProvider: ext.tree }
+				{ treeDataProvider: ext.tree },
 			);
 			context.subscriptions.push(ext.treeView);
 
@@ -110,234 +109,234 @@ export async function activateInternal(
 				new SearchResultDocumentProvider();
 			vscode.workspace.registerTextDocumentContentProvider(
 				"search",
-				searchResultDocumentProvider
+				searchResultDocumentProvider,
 			);
 
 			registerCommand(
 				"azureCognitiveSearch.refresh",
 				async (
 					_actionContext: IActionContext,
-					treeItem?: AzExtTreeItem
-				) => ext.tree.refresh(treeItem)
+					treeItem?: AzExtTreeItem,
+				) => ext.tree.refresh(treeItem),
 			);
 			registerCommand(
 				"azureCognitiveSearch.loadMore",
 				async (
 					actionContext: IActionContext,
-					treeItem: AzExtTreeItem
-				) => await ext.tree.loadMore(treeItem, actionContext)
+					treeItem: AzExtTreeItem,
+				) => await ext.tree.loadMore(treeItem, actionContext),
 			);
 			registerCommand("azureCognitiveSearch.selectSubscriptions", () =>
 				vscode.commands.executeCommand(
-					"azure-account.selectSubscriptions"
-				)
+					"azure-account.selectSubscriptions",
+				),
 			);
 			registerCommand(
 				"azureCognitiveSearch.openDocument",
 				async (
 					_actionContext: IActionContext,
-					treeItem: IDocumentRepository
-				) => await documentEditor.showEditor(treeItem)
+					treeItem: IDocumentRepository,
+				) => await documentEditor.showEditor(treeItem),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createDocument",
 				async (
 					actionContext: IActionContext,
-					treeItem: DocumentListTreeItem
+					treeItem: DocumentListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						DocumentListTreeItem.contextValue
-					)
+						DocumentListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteDocument",
 				async (
 					actionContext: IActionContext,
-					treeItem: DocumentTreeItem
+					treeItem: DocumentTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						DocumentTreeItem.contextValue
-					)
+						DocumentTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createDataSource",
 				async (
 					actionContext: IActionContext,
-					treeItem: DataSourceListTreeItem
+					treeItem: DataSourceListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						DataSourceListTreeItem.contextValue
-					)
+						DataSourceListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteDataSource",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						DataSourceListTreeItem.itemContextValue
-					)
+						DataSourceListTreeItem.itemContextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createIndexer",
 				async (
 					actionContext: IActionContext,
-					treeItem: IndexerListTreeItem
+					treeItem: IndexerListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						IndexerListTreeItem.contextValue
-					)
+						IndexerListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteIndexer",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						IndexerListTreeItem.itemContextValue
-					)
+						IndexerListTreeItem.itemContextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createIndex",
 				async (
 					actionContext: IActionContext,
-					treeItem: IndexListTreeItem
+					treeItem: IndexListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						IndexListTreeItem.contextValue
-					)
+						IndexListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteIndex",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						IndexListTreeItem.itemContextValue
-					)
+						IndexListTreeItem.itemContextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createSkillset",
 				async (
 					actionContext: IActionContext,
-					treeItem: SkillsetListTreeItem
+					treeItem: SkillsetListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						SkillsetListTreeItem.contextValue
-					)
+						SkillsetListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteSkillset",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						SkillsetListTreeItem.itemContextValue
-					)
+						SkillsetListTreeItem.itemContextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createSynonymMap",
 				async (
 					actionContext: IActionContext,
-					treeItem: SynonymMapListTreeItem
+					treeItem: SynonymMapListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						SynonymMapListTreeItem.contextValue
-					)
+						SynonymMapListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteSynonymMap",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						SynonymMapListTreeItem.itemContextValue
-					)
+						SynonymMapListTreeItem.itemContextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.createAlias",
 				async (
 					actionContext: IActionContext,
-					treeItem: AliasListTreeItem
+					treeItem: AliasListTreeItem,
 				) =>
 					createResource(
 						treeItem,
 						actionContext,
-						AliasListTreeItem.contextValue
-					)
+						AliasListTreeItem.contextValue,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteAlias",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) =>
 					deleteResource(
 						treeItem,
 						actionContext,
-						AliasListTreeItem.itemContextValue
-					)
+						AliasListTreeItem.itemContextValue,
+					),
 			);
 
 			registerCommand(
 				"azureCognitiveSearch.search",
 				async (
 					actionContext: IActionContext,
-					treeItem: AzExtTreeItem
+					treeItem: AzExtTreeItem,
 				) =>
 					search(
 						treeItem,
 						actionContext,
-						searchResultDocumentProvider
-					)
+						searchResultDocumentProvider,
+					),
 			);
 			registerCommand(
 				"azureCognitiveSearch.openSearchEditor",
 				async (
 					actionContext: IActionContext,
-					treeItem: IndexTreeItem
-				) => openSearchEditor(treeItem)
+					treeItem: IndexTreeItem,
+				) => openSearchEditor(treeItem),
 			);
 			registerCommand(
 				"azureCognitiveSearch.openInPortal",
 				async (
 					actionContext: IActionContext,
-					treeItem?: AzureTreeItem
+					treeItem?: AzureTreeItem,
 				) => {
 					if (!treeItem) {
 						treeItem = <SearchServiceTreeItem>(
 							await ext.tree.showTreeItemPicker(
 								SearchServiceTreeItem.contextValue,
-								actionContext
+								actionContext,
 							)
 						);
 					}
@@ -345,63 +344,64 @@ export async function activateInternal(
 					// We retrieved the search service ARM object using the generic ARM client, not the Azure Search ARM client, which
 					// somehow messes with the fullId relative to what treeItem.openInPortal() expects, so calling the underlying function
 					// await treeItem.openInPortal();
-					let id = (<SearchServiceTreeItem>treeItem).searchService.id;
+					const id = (<SearchServiceTreeItem>treeItem).searchService
+						.id;
 					if (id !== undefined) {
 						openInPortal(treeItem.root, id);
 					}
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.resetIndexer",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) => {
 					if (!treeItem) {
 						treeItem = await ext.tree.showTreeItemPicker(
 							IndexerListTreeItem.itemContextValue,
-							actionContext
+							actionContext,
 						);
 					}
 
 					const r = await vscode.window.showWarningMessage(
 						`Are you sure you want to reset ${treeItem.itemName} ${treeItem.itemKind}?`,
 						DialogResponses.yes,
-						DialogResponses.cancel
+						DialogResponses.cancel,
 					);
 					if (r === DialogResponses.yes) {
 						await treeItem.resetIndexer(actionContext);
 					}
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.runIndexer",
 				async (
 					actionContext: IActionContext,
-					treeItem: EditableResourceTreeItem
+					treeItem: EditableResourceTreeItem,
 				) => {
 					if (!treeItem) {
 						treeItem = await ext.tree.showTreeItemPicker(
 							IndexerListTreeItem.contextValue,
-							actionContext
+							actionContext,
 						);
 					}
 
 					const r = await vscode.window.showWarningMessage(
 						`Are you sure you want to run ${treeItem.itemName} ${treeItem.itemKind}?`,
 						DialogResponses.yes,
-						DialogResponses.cancel
+						DialogResponses.cancel,
 					);
 					if (r === DialogResponses.yes) {
 						await treeItem.runIndexer(actionContext);
 					}
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.copyAdminKey",
 				async (
 					actionContext: IActionContext,
-					node?: SearchServiceTreeItem
+					node?: SearchServiceTreeItem,
 				) => {
 					const message =
 						"The primary admin key has been copied to the clipboard";
@@ -409,19 +409,19 @@ export async function activateInternal(
 						node =
 							await ext.tree.showTreeItemPicker<SearchServiceTreeItem>(
 								SearchServiceTreeItem.contextValue,
-								actionContext
+								actionContext,
 							);
 					}
 
 					await copyAdminKey(node);
 					vscode.window.showInformationMessage(message);
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.copyQueryKey",
 				async (
 					actionContext: IActionContext,
-					node?: SearchServiceTreeItem
+					node?: SearchServiceTreeItem,
 				) => {
 					const message =
 						"The query key has been copied to the clipboard";
@@ -429,30 +429,30 @@ export async function activateInternal(
 						node =
 							await ext.tree.showTreeItemPicker<SearchServiceTreeItem>(
 								SearchServiceTreeItem.contextValue,
-								actionContext
+								actionContext,
 							);
 					}
 
 					await copyQueryKey(node);
 					vscode.window.showInformationMessage(message);
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.createSearchService",
 				async (
 					actionContext: IActionContext,
-					node?: SubscriptionTreeItem
+					node?: SubscriptionTreeItem,
 				) => {
 					if (!node) {
 						node =
 							await ext.tree.showTreeItemPicker<SubscriptionTreeItem>(
 								SubscriptionTreeItem.contextValue,
-								actionContext
+								actionContext,
 							);
 					}
 
 					await node.createChild(actionContext);
-				}
+				},
 			);
 			registerCommand(
 				"azureCognitiveSearch.deleteSearchService",
@@ -463,19 +463,19 @@ export async function activateInternal(
 					if (!node) {
 						node = await ext.tree.showTreeItemPicker<AzureTreeItem>(
 							SearchServiceTreeItem.contextValue,
-							actionContext
+							actionContext,
 						);
 					}
 
 					const r = await vscode.window.showWarningMessage(
 						`Are you sure you want to delete the search service ${node.label}?`,
 						DialogResponses.yes,
-						DialogResponses.cancel
+						DialogResponses.cancel,
 					);
 					if (r === DialogResponses.yes) {
 						await node.deleteTreeItem(actionContext);
 					}
-				}
+				},
 			);
 
 			vscode.commands.registerTextEditorCommand(
@@ -484,8 +484,8 @@ export async function activateInternal(
 					searchToDocument(
 						editor,
 						azureAccountTreeItem,
-						searchResultDocumentProvider
-					)
+						searchResultDocumentProvider,
+					),
 			);
 
 			registerEvent(
@@ -493,8 +493,8 @@ export async function activateInternal(
 				vscode.workspace.onDidSaveTextDocument,
 				async (
 					_actionContext: IActionContext,
-					doc: vscode.TextDocument
-				) => await documentEditor.onDidSaveTextDocument(doc)
+					doc: vscode.TextDocument,
+				) => await documentEditor.onDidSaveTextDocument(doc),
 			);
 
 			registerEvent(
@@ -502,17 +502,17 @@ export async function activateInternal(
 				vscode.workspace.onDidCloseTextDocument,
 				async (
 					_actionContext: IActionContext,
-					doc: vscode.TextDocument
+					doc: vscode.TextDocument,
 				) => {
 					_actionContext.telemetry.measurements.duration;
 					if (doc.uri.scheme === "search") {
 						searchResultDocumentProvider.unregisterContent(
-							doc.uri.path
+							doc.uri.path,
 						);
 					}
-				}
+				},
 			);
-		}
+		},
 	);
 
 	return createApiProvider([]);
@@ -524,38 +524,38 @@ export function deactivateInternal() {}
 async function createResource(
 	treeItem: AzureParentTreeItem,
 	actionContext: IActionContext,
-	contextValue: string
+	contextValue: string,
 ): Promise<void> {
 	if (!treeItem) {
 		treeItem = await ext.tree.showTreeItemPicker(
 			contextValue,
-			actionContext
+			actionContext,
 		);
 	}
 
 	const item = await treeItem.createChild(actionContext);
 	await vscode.commands.executeCommand(
 		"azureCognitiveSearch.openDocument",
-		item
+		item,
 	);
 }
 
 async function deleteResource(
 	treeItem: AzExtTreeItem & IDocumentRepository,
 	actionContext: IActionContext,
-	contextValue: string
+	contextValue: string,
 ): Promise<void> {
 	if (!treeItem) {
 		treeItem = await ext.tree.showTreeItemPicker(
 			contextValue,
-			actionContext
+			actionContext,
 		);
 	}
 
 	const r = await vscode.window.showWarningMessage(
 		`Are you sure you want to delete this ${treeItem.itemKind}?`,
 		DialogResponses.deleteResponse,
-		DialogResponses.cancel
+		DialogResponses.cancel,
 	);
 	if (r === DialogResponses.deleteResponse) {
 		await treeItem.deleteTreeItem(actionContext);
@@ -565,7 +565,7 @@ async function deleteResource(
 async function search(
 	treeItem: AzExtTreeItem,
 	actionContext: IActionContext,
-	documentProvider: SearchResultDocumentProvider
+	documentProvider: SearchResultDocumentProvider,
 ): Promise<void> {
 	let indexItem = findSearchTarget(treeItem);
 
@@ -573,21 +573,21 @@ async function search(
 		indexItem = <IndexTreeItem>(
 			await ext.tree.showTreeItemPicker(
 				IndexTreeItem.contextValue,
-				actionContext
+				actionContext,
 			)
 		);
 	}
 
-	let query = await ext.ui.showInputBox({
+	const query = await ext.ui.showInputBox({
 		placeHolder: "search=....&$filter=...",
 		prompt: "Enter an Azure Cognitive Search query string. You can use search, $filter, $top, etc.",
 	});
 	const result = await indexItem.search(query);
 	const id = documentProvider.registerContent(
-		JSON.stringify(result, undefined, 4)
+		JSON.stringify(result, undefined, 4),
 	);
 	const doc = await vscode.workspace.openTextDocument(
-		vscode.Uri.parse(`search:${id}`)
+		vscode.Uri.parse(`search:${id}`),
 	);
 	await vscode.window.showTextDocument(doc);
 }
@@ -598,7 +598,7 @@ function findSearchTarget(treeItem: AzExtTreeItem): IndexTreeItem | undefined {
 	if (treeItem && treeItem.contextValue === IndexTreeItem.contextValue) {
 		indexItem = <IndexTreeItem>treeItem;
 	} else {
-		let selected =
+		const selected =
 			ext.treeView.selection && ext.treeView.selection.length > 0
 				? ext.treeView.selection[0]
 				: undefined;
@@ -643,27 +643,27 @@ async function openSearchEditor(treeItem: IndexTreeItem): Promise<void> {
 async function searchToDocument(
 	editor: vscode.TextEditor,
 	root: AzExtTreeItem,
-	documentProvider: SearchResultDocumentProvider
+	documentProvider: SearchResultDocumentProvider,
 ): Promise<void> {
 	let text: string;
 	if (editor.selection.isEmpty) {
 		text = editor.document.lineAt(editor.selection.active.line).text;
 	} else {
 		text = editor.document.getText(
-			new vscode.Range(editor.selection.start, editor.selection.end)
+			new vscode.Range(editor.selection.start, editor.selection.end),
 		);
 	}
 
 	if (ext.treeView.selection.length === 0) {
 		ext.ui.showWarningMessage(
-			"Select an Azure Cognitive Search index from the left panel."
+			"Select an Azure Cognitive Search index from the left panel.",
 		);
 		await ext.treeView.reveal(root, { expand: true });
 	} else if (
 		ext.treeView.selection[0].contextValue !== "azureCognitiveSearchIndex"
 	) {
 		ext.ui.showWarningMessage(
-			"Select an Azure Cognitive Search index from the left panel."
+			"Select an Azure Cognitive Search index from the left panel.",
 		);
 	} else {
 		const indexItem = <IndexTreeItem>ext.treeView.selection[0];
@@ -674,21 +674,21 @@ async function searchToDocument(
 			ext.ui.showWarningMessage(error.message);
 		}
 		const id = documentProvider.registerContent(
-			JSON.stringify(result, undefined, 4)
+			JSON.stringify(result, undefined, 4),
 		);
 		const doc = await vscode.workspace.openTextDocument(
-			vscode.Uri.parse(`search:${id}`)
+			vscode.Uri.parse(`search:${id}`),
 		);
 		await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
 	}
 }
 
 async function copyAdminKey(treeItem: SearchServiceTreeItem): Promise<void> {
-	let keys = await treeItem.getAdminKeys();
+	const keys = await treeItem.getAdminKeys();
 	await vscode.env.clipboard.writeText(<string>keys.primaryKey);
 }
 
 async function copyQueryKey(treeItem: SearchServiceTreeItem): Promise<void> {
-	let keys = await treeItem.getQueryKey();
+	const keys = await treeItem.getQueryKey();
 	await vscode.env.clipboard.writeText(<string>keys.key);
 }

@@ -3,12 +3,12 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AzureTreeItem, AzureParentTreeItem } from "vscode-azureextensionui";
-import { IDocumentRepository } from "./IDocumentRepository";
-import { SearchService } from "azure-arm-search/lib/models";
-import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
 import * as path from "path";
+import { SearchService } from "azure-arm-search/lib/models";
+import { Uri } from "vscode";
+import { AzureParentTreeItem, AzureTreeItem } from "vscode-azureextensionui";
+import { IDocumentRepository } from "./IDocumentRepository";
+import { getResourcesPath } from "./constants";
 
 export class ServiceDetailsTreeItem
 	extends AzureTreeItem
@@ -24,7 +24,7 @@ export class ServiceDetailsTreeItem
 
 	public constructor(
 		parent: AzureParentTreeItem,
-		private readonly searchService: SearchService
+		private readonly searchService: SearchService,
 	) {
 		super(parent);
 		this.itemName = searchService.name || "";
@@ -44,7 +44,7 @@ export class ServiceDetailsTreeItem
 
 	async updateContent(
 		content: any,
-		etag?: string | undefined
+		etag?: string | undefined,
 	): Promise<void> {
 		throw new Error("Updating service details not supported.");
 	}

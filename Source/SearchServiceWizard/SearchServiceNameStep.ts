@@ -7,8 +7,8 @@ import { SearchManagementClient } from "azure-arm-search";
 import { CheckNameAvailabilityOutput } from "azure-arm-search/lib/models";
 import {
 	AzureNameStep,
-	createAzureClient,
 	ResourceGroupListStep,
+	createAzureClient,
 	resourceGroupNamingRules,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
@@ -20,7 +20,7 @@ export class SearchServiceNameStep<
 	public async prompt(wizardContext: T): Promise<void> {
 		const client: SearchManagementClient = createAzureClient(
 			wizardContext,
-			SearchManagementClient
+			SearchManagementClient,
 		);
 
 		const suggestedName: string | undefined = wizardContext.relatedNameTask
@@ -31,7 +31,7 @@ export class SearchServiceNameStep<
 				value: suggestedName,
 				prompt: "Enter a globally unique name for the new Search Service",
 				validateInput: async (
-					value: string
+					value: string,
 				): Promise<string | undefined> =>
 					await this.validateSearchServiceName(client, value),
 			})
@@ -40,7 +40,7 @@ export class SearchServiceNameStep<
 			wizardContext.relatedNameTask = this.generateRelatedName(
 				wizardContext,
 				wizardContext.newServiceName,
-				resourceGroupNamingRules
+				resourceGroupNamingRules,
 			);
 		}
 	}
@@ -51,27 +51,25 @@ export class SearchServiceNameStep<
 
 	protected async isRelatedNameAvailable(
 		wizardContext: T,
-		name: string
+		name: string,
 	): Promise<boolean> {
 		return await ResourceGroupListStep.isNameAvailable(wizardContext, name);
 	}
 
 	private async validateSearchServiceName(
 		client: SearchManagementClient,
-		name: string
+		name: string,
 	): Promise<string | undefined> {
 		name = name ? name.trim() : "";
 
 		const nameAvailabilityResult: CheckNameAvailabilityOutput =
 			await client.services.checkNameAvailability(name);
-		if (!nameAvailabilityResult.isNameAvailable) {
-			if (nameAvailabilityResult.message) {
-				return nameAvailabilityResult.message;
-			} else {
-				return `Search service name "${name}" is not available`;
-			}
-		} else {
+		if (nameAvailabilityResult.isNameAvailable) {
 			return undefined;
+		} else if (nameAvailabilityResult.message) {
+			return nameAvailabilityResult.message;
+		} else {
+			return `Search service name "${name}" is not available`;
 		}
 	}
 }

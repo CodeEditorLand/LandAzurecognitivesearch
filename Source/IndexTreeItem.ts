@@ -3,19 +3,18 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	AzureParentTreeItem,
-	IActionContext,
-	AzExtTreeItem,
-	GenericTreeItem,
-} from "vscode-azureextensionui";
-import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { SimpleSearchClient, Index } from "./SimpleSearchClient";
-import { DocumentListTreeItem } from "./DocumentListTreeItem";
-import { IndexListTreeItem } from "./IndexListTreeItem";
-import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
 import * as path from "path";
 import { Uri } from "vscode";
+import {
+	AzExtTreeItem,
+	AzureParentTreeItem,
+	IActionContext,
+} from "vscode-azureextensionui";
+import { DocumentListTreeItem } from "./DocumentListTreeItem";
+import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
+import { IndexListTreeItem } from "./IndexListTreeItem";
+import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
+import { Index, SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
 
 export class IndexTreeItem extends AzureParentTreeItem {
@@ -27,7 +26,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 	public constructor(
 		parent: IndexListTreeItem,
 		private readonly searchClient: SimpleSearchClient,
-		private readonly index: Index
+		private readonly index: Index,
 	) {
 		super(parent);
 		this.label = index.name;
@@ -40,7 +39,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 
 	public async loadMoreChildrenImpl(
 		clearCache: boolean,
-		context: IActionContext
+		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		return [
 			new EditableResourceTreeItem(
@@ -52,7 +51,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 				"azsindex",
 				false,
 				this.searchClient,
-				"Index Details"
+				"Index Details",
 			),
 			new DocumentListTreeItem(this, this.searchClient, this.index),
 		];
@@ -67,7 +66,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 			return await this.searchClient.queryPost(
 				this.index.name,
 				query,
-				true
+				true,
 			);
 		} else {
 			return await this.searchClient.query(this.index.name, query, true);
@@ -76,7 +75,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 
 	public compareChildrenImpl(
 		item1: AzExtTreeItem,
-		item2: AzExtTreeItem
+		item2: AzExtTreeItem,
 	): number {
 		return (
 			SearchServiceTreeItem.getTreeItemPosition(item1) -

@@ -9,7 +9,7 @@ export class SearchResultDocumentProvider
 	implements vscode.TextDocumentContentProvider
 {
 	private contentMap: { [key: string]: string } = {};
-	private id: number = 0;
+	private id = 0;
 
 	public registerContent(content: string): string {
 		const key = `${this.id++}.json`;

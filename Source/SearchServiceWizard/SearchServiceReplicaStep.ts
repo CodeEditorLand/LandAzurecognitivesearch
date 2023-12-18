@@ -12,7 +12,7 @@ import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceReplicaStep extends AzureWizardPromptStep<ISearchServiceWizardContext> {
 	public async prompt(
-		wizardContext: ISearchServiceWizardContext
+		wizardContext: ISearchServiceWizardContext,
 	): Promise<void> {
 		const placeHolder: string =
 			"Select the replica count for your search service";
@@ -33,7 +33,7 @@ export class SearchServiceReplicaStep extends AzureWizardPromptStep<ISearchServi
 	}
 
 	public async getPicks(
-		wizardContext: ISearchServiceWizardContext
+		wizardContext: ISearchServiceWizardContext,
 	): Promise<IAzureQuickPickItem<number>[]> {
 		if (wizardContext.sku === "basic") {
 			return [

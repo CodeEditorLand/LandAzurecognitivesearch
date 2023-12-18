@@ -5,10 +5,9 @@
 
 // tslint:disable:no-unsafe-any
 
-import * as cp from "child_process";
+import * as path from "path";
 import * as fse from "fs-extra";
 import * as gulp from "gulp";
-import * as path from "path";
 import {
 	gulp_installAzureAccount,
 	gulp_webpack,
@@ -24,9 +23,9 @@ async function prepareForWebpack(): Promise<void> {
 }
 
 exports["webpack-dev"] = gulp.series(prepareForWebpack, () =>
-	gulp_webpack("development")
+	gulp_webpack("development"),
 );
 exports["webpack-prod"] = gulp.series(prepareForWebpack, () =>
-	gulp_webpack("production")
+	gulp_webpack("production"),
 );
 exports.preTest = gulp_installAzureAccount;

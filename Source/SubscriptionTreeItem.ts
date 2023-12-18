@@ -3,41 +3,36 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	SearchManagementClient,
-	SearchManagementModels,
-} from "azure-arm-search";
+import * as path from "path";
 import { ResourceManagementClient } from "azure-arm-resource";
-import { SearchService, Sku } from "azure-arm-search/lib/models";
+import { SearchManagementClient } from "azure-arm-search";
+import { SearchService } from "azure-arm-search/lib/models";
+import { Uri } from "vscode";
 import {
 	AzExtTreeItem,
 	AzureTreeItem,
-	createAzureClient,
-	SubscriptionTreeItemBase,
-	addExtensionUserAgent,
 	AzureWizard,
 	AzureWizardPromptStep,
 	ICreateChildImplContext,
-	ILocationWizardContext,
-	ResourceGroupListStep,
 	LocationListStep,
-	StorageAccountCreateStep,
+	ResourceGroupListStep,
+	SubscriptionTreeItemBase,
+	addExtensionUserAgent,
+	createAzureClient,
 } from "vscode-azureextensionui";
 import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { getResourcesPath } from "./constants";
-import { Uri } from "vscode";
-import * as path from "path";
 import { ISearchServiceWizardContext } from "./SearchServiceWizard/ISearchServiceWizardContext";
-import { SearchServiceNameStep } from "./SearchServiceWizard/SearchServiceNameStep";
-import { nonNullProp } from "./utils/nonNull";
-import { SearchServiceSkuStep } from "./SearchServiceWizard/SearchServiceSkuStep";
-import { SearchServiceReplicaStep } from "./SearchServiceWizard/SearchServiceReplicaStep";
-import { SearchServicePartitionStep } from "./SearchServiceWizard/SearchServicePartitionStep";
 import { SearchServiceCreateStep } from "./SearchServiceWizard/SearchServiceCreateStep";
+import { SearchServiceNameStep } from "./SearchServiceWizard/SearchServiceNameStep";
+import { SearchServicePartitionStep } from "./SearchServiceWizard/SearchServicePartitionStep";
+import { SearchServiceReplicaStep } from "./SearchServiceWizard/SearchServiceReplicaStep";
+import { SearchServiceSkuStep } from "./SearchServiceWizard/SearchServiceSkuStep";
+import { getResourcesPath } from "./constants";
+import { nonNullProp } from "./utils/nonNull";
 
 export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 	private _nextLink: string | undefined;
-	public childTypeLabel: string = "Search Service";
+	public childTypeLabel = "Search Service";
 	public iconPath: { light: string | Uri; dark: string | Uri } = {
 		light: path.join(getResourcesPath(), "Subscriptions.svg"),
 		dark: path.join(getResourcesPath(), "Subscriptions.svg"),
@@ -54,7 +49,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 		const searchManagementClient = new SearchManagementClient(
 			this.root.credentials,
 			this.root.subscriptionId,
-			this.root.environment.resourceManagerEndpointUrl
+			this.root.environment.resourceManagerEndpointUrl,
 		);
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
@@ -63,13 +58,13 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const resourceManagementClient = createAzureClient(
 			this.root,
-			ResourceManagementClient.ResourceManagementClient
+			ResourceManagementClient.ResourceManagementClient,
 		);
-		const services = !this._nextLink
-			? await resourceManagementClient.resources.list({
+		const services = this._nextLink
+			? await resourceManagementClient.resources.listNext(this._nextLink)
+			: await resourceManagementClient.resources.list({
 					filter: "resourceType eq 'Microsoft.Search/searchServices'",
-				})
-			: await resourceManagementClient.resources.listNext(this._nextLink);
+			  });
 		this._nextLink = services.nextLink;
 
 		return this.createTreeItemsWithErrorHandling(
@@ -79,9 +74,9 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 				await new SearchServiceTreeItem(
 					this,
 					s,
-					searchManagementClient
+					searchManagementClient,
 				),
-			(s: SearchService) => s.name
+			(s: SearchService) => s.name,
 		);
 	}
 
@@ -90,12 +85,12 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 	}
 
 	public async createChildImpl(
-		context: ICreateChildImplContext
+		context: ICreateChildImplContext,
 	): Promise<AzureTreeItem> {
 		const searchManagementClient = new SearchManagementClient(
 			this.root.credentials,
 			this.root.subscriptionId,
-			this.root.environment.resourceManagerEndpointUrl
+			this.root.environment.resourceManagerEndpointUrl,
 		);
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
@@ -104,7 +99,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const wizardContext: ISearchServiceWizardContext = Object.assign(
 			context,
-			this.root
+			this.root,
 		);
 
 		const promptSteps: AzureWizardPromptStep<ISearchServiceWizardContext>[] =
@@ -127,20 +122,20 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		const newServiceName: string = nonNullProp(
 			wizardContext,
-			"newServiceName"
+			"newServiceName",
 		);
 		context.showCreatingTreeItem(newServiceName);
 		await wizard.execute();
 
 		const newSearchService: SearchService = nonNullProp(
 			wizardContext,
-			"searchService"
+			"searchService",
 		);
 
 		return new SearchServiceTreeItem(
 			this,
 			newSearchService,
-			searchManagementClient
+			searchManagementClient,
 		);
 	}
 }
