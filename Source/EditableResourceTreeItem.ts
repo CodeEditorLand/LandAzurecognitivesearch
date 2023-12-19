@@ -92,8 +92,8 @@ export class EditableResourceTreeItem
 			this.itemSet,
 			this.itemName,
 		);
-		delete r.content["@odata.context"];
-		delete r.content["@odata.etag"];
+		r.content["@odata.context"] = undefined;
+		r.content["@odata.etag"] = undefined;
 
 		return r;
 	}

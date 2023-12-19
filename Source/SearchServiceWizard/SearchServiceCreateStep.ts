@@ -21,10 +21,6 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 {
 	public priority = 130;
 
-	public constructor() {
-		super();
-	}
-
 	public async execute(wizardContext: T): Promise<void> {
 		const newServiceName: string = nonNullProp(
 			wizardContext,

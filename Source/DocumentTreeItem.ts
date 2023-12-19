@@ -51,7 +51,7 @@ export class DocumentTreeItem
 	> {
 		// New doc being created in an editor
 		if (!this.key) {
-			var schema = await this.getSchema();
+			const schema = await this.getSchema();
 
 			return { content: schema, etag: undefined };
 		}
@@ -87,32 +87,35 @@ export class DocumentTreeItem
 	}
 
 	private async getSchema(): Promise<string> {
-		var indexSchema = await this.searchClient.getResource(
+		const indexSchema = await this.searchClient.getResource(
 			"indexes",
 			this.index.name,
 		);
 
-		var jsonSchema = this.mapFields(indexSchema.content.fields);
+		const jsonSchema = this.mapFields(indexSchema.content.fields);
 
 		return jsonSchema;
 	}
 
-	private mapFields(fields: Array<any>): any {
-		var jsonSchema: any = {};
+	private mapFields(fields: any[]): any {
+		const jsonSchema: any = {};
 		for (const field of fields) {
-			if (field.type == "Collection(Edm.ComplexType)") {
+			if (field.type === "Collection(Edm.ComplexType)") {
 				jsonSchema[field.name] = [this.mapFields(field.fields)];
-			} else if (field.type == "Edm.ComplexType") {
+			} else if (field.type === "Edm.ComplexType") {
 				jsonSchema[field.name] = this.mapFields(field.fields);
 			} else if (field.type.includes("Collection")) {
 				jsonSchema[field.name] = [];
-			} else if (field.type == "Edm.String") {
+			} else if (field.type === "Edm.String") {
 				jsonSchema[field.name] = "";
-			} else if (field.type == "Edm.Boolean") {
+			} else if (field.type === "Edm.Boolean") {
 				jsonSchema[field.name] = false;
-			} else if (field.type == "Edm.Int32" || field.type == "Edm.Int64") {
+			} else if (
+				field.type === "Edm.Int32" ||
+				field.type === "Edm.Int64"
+			) {
 				jsonSchema[field.name] = 0;
-			} else if (field.type == "Edm.Double") {
+			} else if (field.type === "Edm.Double") {
 				jsonSchema[field.name] = 0.0;
 			} else {
 				jsonSchema[field.name] = null;

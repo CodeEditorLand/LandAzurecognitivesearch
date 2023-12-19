@@ -616,11 +616,11 @@ function findSearchTarget(treeItem: AzExtTreeItem): IndexTreeItem | undefined {
 
 async function openSearchEditor(treeItem: IndexTreeItem): Promise<void> {
 	const suffix = getRandomSuffix();
-	const filename = "sandbox-" + suffix + ".azs";
+	const filename = `sandbox-${suffix}.azs`;
 	const localPath = path.join(os.tmpdir(), "vscode-azs-editor", filename);
 	await fse.ensureFile(localPath);
 
-	var template = "// Press ctrl+alt+r or cmd+option+r to search";
+	let template = "// Press ctrl+alt+r or cmd+option+r to search";
 	template += "\n\n";
 	template += "// You can send queries in the GET format\n";
 	template += "search=*";

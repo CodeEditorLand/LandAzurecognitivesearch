@@ -175,12 +175,7 @@ export class SimpleSearchClient {
 	}
 
 	private extractErrorMessage(error: any): string | undefined {
-		if (
-			error.response &&
-			error.response.data &&
-			error.response.data.error &&
-			error.response.data.error.message
-		) {
+		if (error.response?.data?.error?.message) {
 			return error.response.data.error.message;
 		}
 
@@ -254,7 +249,7 @@ export class SimpleSearchClient {
 	private makeUrl(path: string, options = ""): string {
 		const suffix: string = this.cloudSuffix || "search.windows.net";
 		if (options !== "" && options[0] !== "&") {
-			options = "&" + options;
+			options = `&${options}`;
 		}
 
 		// Using the preview API for document operations
