@@ -7,7 +7,7 @@
 
 // See https://github.com/Microsoft/vscode-azuretools/wiki/webpack for guidance
 
-const process = require("process");
+const process = require("node:process");
 const dev = require("vscode-azureextensiondev");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 

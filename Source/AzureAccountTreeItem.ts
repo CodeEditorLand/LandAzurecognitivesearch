@@ -5,7 +5,7 @@
 
 import {
 	AzureAccountTreeItemBase,
-	ISubscriptionContext,
+	type ISubscriptionContext,
 } from "vscode-azureextensionui";
 import { SubscriptionTreeItem } from "./SubscriptionTreeItem";
 

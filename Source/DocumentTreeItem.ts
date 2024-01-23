@@ -3,12 +3,12 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
-import { Uri } from "vscode";
-import { AzureTreeItem, IActionContext } from "vscode-azureextensionui";
-import { DocumentListTreeItem } from "./DocumentListTreeItem";
-import { IDocumentRepository } from "./IDocumentRepository";
-import { Field, Index, SimpleSearchClient } from "./SimpleSearchClient";
+import * as path from "node:path";
+import type { Uri } from "vscode";
+import { AzureTreeItem, type IActionContext } from "vscode-azureextensionui";
+import type { DocumentListTreeItem } from "./DocumentListTreeItem";
+import type { IDocumentRepository } from "./IDocumentRepository";
+import type { Field, Index, SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
 
 export class DocumentTreeItem

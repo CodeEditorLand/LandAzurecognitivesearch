@@ -3,11 +3,14 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
-import { SearchService } from "azure-arm-search/lib/models";
-import { Uri } from "vscode";
-import { AzureParentTreeItem, AzureTreeItem } from "vscode-azureextensionui";
-import { IDocumentRepository } from "./IDocumentRepository";
+import * as path from "node:path";
+import type { SearchService } from "azure-arm-search/lib/models";
+import type { Uri } from "vscode";
+import {
+	type AzureParentTreeItem,
+	AzureTreeItem,
+} from "vscode-azureextensionui";
+import type { IDocumentRepository } from "./IDocumentRepository";
 import { getResourcesPath } from "./constants";
 
 export class ServiceDetailsTreeItem

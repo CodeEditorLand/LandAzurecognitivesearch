@@ -5,7 +5,7 @@
 
 import {
 	SearchManagementClient,
-	SearchManagementModels,
+	type SearchManagementModels,
 } from "azure-arm-search";
 import {
 	AzureWizardExecuteStep,
@@ -13,7 +13,7 @@ import {
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
 import { nonNullProp } from "../utils/nonNull";
-import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
+import type { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 	extends AzureWizardExecuteStep<T>

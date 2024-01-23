@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import Axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import Axios, { type AxiosRequestConfig, type AxiosResponse } from "axios";
 import { appendExtensionUserAgent } from "vscode-azureextensionui";
 
 export class SimpleSearchClient {

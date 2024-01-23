@@ -3,23 +3,23 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as crypto from "crypto";
-import * as fs from "fs";
-import * as os from "os";
-import * as path from "path";
+import * as crypto from "node:crypto";
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import {
 	AzExtTreeDataProvider,
-	AzExtTreeItem,
-	AzureParentTreeItem,
-	AzureTreeItem,
+	type AzExtTreeItem,
+	type AzureParentTreeItem,
+	type AzureTreeItem,
 	AzureUserInput,
 	DialogResponses,
-	IActionContext,
-	ITreeItemPickerContext,
+	type IActionContext,
+	type ITreeItemPickerContext,
 	callWithTelemetryAndErrorHandling,
 	createApiProvider,
 	createAzExtOutputChannel,
@@ -35,8 +35,8 @@ import { DataSourceListTreeItem } from "./DataSourceListTreeItem";
 import { DocumentEditor } from "./DocumentEditor";
 import { DocumentListTreeItem } from "./DocumentListTreeItem";
 import { DocumentTreeItem } from "./DocumentTreeItem";
-import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
-import { IDocumentRepository } from "./IDocumentRepository";
+import type { EditableResourceTreeItem } from "./EditableResourceTreeItem";
+import type { IDocumentRepository } from "./IDocumentRepository";
 import { IndexListTreeItem } from "./IndexListTreeItem";
 import { IndexTreeItem } from "./IndexTreeItem";
 import { IndexerListTreeItem } from "./IndexerListTreeItem";

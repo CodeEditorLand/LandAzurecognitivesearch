@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as crypto from "crypto";
-import * as os from "os";
-import * as path from "path";
+import * as crypto from "node:crypto";
+import * as os from "node:os";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as vscode from "vscode";
 import { DialogResponses, UserCancelledError } from "vscode-azureextensionui";
-import { IDocumentRepository } from "./IDocumentRepository";
+import type { IDocumentRepository } from "./IDocumentRepository";
 import { ext } from "./extensionVariables";
 
 export class DocumentEditor implements vscode.Disposable {

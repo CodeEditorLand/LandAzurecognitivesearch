@@ -3,18 +3,18 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
-import { Uri } from "vscode";
+import * as path from "node:path";
+import type { Uri } from "vscode";
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	IActionContext,
-	ICreateChildImplContext,
+	type IActionContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
 import { IndexTreeItem } from "./IndexTreeItem";
-import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { Index, SimpleSearchClient } from "./SimpleSearchClient";
+import type { SearchServiceTreeItem } from "./SearchServiceTreeItem";
+import type { Index, SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
 
 export class IndexListTreeItem extends AzureParentTreeItem {

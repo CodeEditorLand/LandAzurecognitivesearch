@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { SearchManagementClient } from "azure-arm-search";
-import { CheckNameAvailabilityOutput } from "azure-arm-search/lib/models";
+import type { CheckNameAvailabilityOutput } from "azure-arm-search/lib/models";
 import {
 	AzureNameStep,
 	ResourceGroupListStep,
@@ -12,7 +12,7 @@ import {
 	resourceGroupNamingRules,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
-import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
+import type { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceNameStep<
 	T extends ISearchServiceWizardContext,

@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import { ResourceManagementClient } from "azure-arm-resource";
 import { SearchManagementClient } from "azure-arm-search";
-import { SearchService } from "azure-arm-search/lib/models";
-import { Uri } from "vscode";
+import type { SearchService } from "azure-arm-search/lib/models";
+import type { Uri } from "vscode";
 import {
-	AzExtTreeItem,
-	AzureTreeItem,
+	type AzExtTreeItem,
+	type AzureTreeItem,
 	AzureWizard,
-	AzureWizardPromptStep,
-	ICreateChildImplContext,
+	type AzureWizardPromptStep,
+	type ICreateChildImplContext,
 	LocationListStep,
 	ResourceGroupListStep,
 	SubscriptionTreeItemBase,
@@ -21,7 +21,7 @@ import {
 	createAzureClient,
 } from "vscode-azureextensionui";
 import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { ISearchServiceWizardContext } from "./SearchServiceWizard/ISearchServiceWizardContext";
+import type { ISearchServiceWizardContext } from "./SearchServiceWizard/ISearchServiceWizardContext";
 import { SearchServiceCreateStep } from "./SearchServiceWizard/SearchServiceCreateStep";
 import { SearchServiceNameStep } from "./SearchServiceWizard/SearchServiceNameStep";
 import { SearchServicePartitionStep } from "./SearchServiceWizard/SearchServicePartitionStep";

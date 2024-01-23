@@ -5,10 +5,10 @@
 
 import {
 	AzureWizardPromptStep,
-	IAzureQuickPickItem,
+	type IAzureQuickPickItem,
 } from "vscode-azureextensionui";
 import { ext } from "../extensionVariables";
-import { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
+import type { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
 export class SearchServiceSkuStep extends AzureWizardPromptStep<ISearchServiceWizardContext> {
 	public async prompt(

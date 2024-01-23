@@ -3,14 +3,14 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 import {
-	AzureParentTreeItem,
+	type AzureParentTreeItem,
 	AzureTreeItem,
-	IActionContext,
+	type IActionContext,
 } from "vscode-azureextensionui";
-import { IDocumentRepository } from "./IDocumentRepository";
-import { SimpleSearchClient } from "./SimpleSearchClient";
+import type { IDocumentRepository } from "./IDocumentRepository";
+import type { SimpleSearchClient } from "./SimpleSearchClient";
 import { getResourcesPath } from "./constants";
 
 export class EditableResourceTreeItem

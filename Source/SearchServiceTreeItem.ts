@@ -3,20 +3,20 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as crypto from "crypto";
-import * as path from "path";
-import { isNullOrUndefined } from "util";
-import SearchManagementClient from "azure-arm-search";
-import {
+import * as crypto from "node:crypto";
+import * as path from "node:path";
+import { isNullOrUndefined } from "node:util";
+import type SearchManagementClient from "azure-arm-search";
+import type {
 	AdminKeyResult,
 	QueryKey,
 	SearchService,
 } from "azure-arm-search/lib/models";
-import { Uri } from "vscode";
+import type { Uri } from "vscode";
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	IActionContext,
+	type IActionContext,
 } from "vscode-azureextensionui";
 import { AliasListTreeItem } from "./AliasListTreeItem";
 import { DataSourceListTreeItem } from "./DataSourceListTreeItem";

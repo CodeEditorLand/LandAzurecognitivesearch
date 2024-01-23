@@ -5,7 +5,7 @@
 
 // tslint:disable:no-unsafe-any
 
-import * as path from "path";
+import * as path from "node:path";
 import * as fse from "fs-extra";
 import * as gulp from "gulp";
 import {

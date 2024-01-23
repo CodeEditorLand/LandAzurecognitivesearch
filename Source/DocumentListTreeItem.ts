@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
-import { Uri } from "vscode";
+import * as path from "node:path";
+import type { Uri } from "vscode";
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	IActionContext,
-	ICreateChildImplContext,
+	type IActionContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { DocumentTreeItem } from "./DocumentTreeItem";
-import { IndexTreeItem } from "./IndexTreeItem";
-import {
+import type { IndexTreeItem } from "./IndexTreeItem";
+import type {
 	Field,
 	Index,
 	QueryResponse,

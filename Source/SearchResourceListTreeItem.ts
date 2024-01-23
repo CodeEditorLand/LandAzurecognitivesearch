@@ -4,14 +4,14 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	AzExtTreeItem,
+	type AzExtTreeItem,
 	AzureParentTreeItem,
-	IActionContext,
-	ICreateChildImplContext,
+	type IActionContext,
+	type ICreateChildImplContext,
 } from "vscode-azureextensionui";
 import { EditableResourceTreeItem } from "./EditableResourceTreeItem";
-import { SearchServiceTreeItem } from "./SearchServiceTreeItem";
-import { SimpleSearchClient } from "./SimpleSearchClient";
+import type { SearchServiceTreeItem } from "./SearchServiceTreeItem";
+import type { SimpleSearchClient } from "./SimpleSearchClient";
 
 export class SearchResourceListTreeItem extends AzureParentTreeItem {
 	public constructor(
