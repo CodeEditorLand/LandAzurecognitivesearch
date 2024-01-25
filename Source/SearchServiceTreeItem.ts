@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as crypto from "node:crypto";
-import * as path from "node:path";
-import { isNullOrUndefined } from "node:util";
+import * as crypto from "crypto";
+import * as path from "path";
+import { isNullOrUndefined } from "util";
 import type SearchManagementClient from "azure-arm-search";
 import type {
 	AdminKeyResult,
