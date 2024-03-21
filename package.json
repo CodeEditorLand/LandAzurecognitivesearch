@@ -1,35 +1,38 @@
 {
-	"name": "vscode-azurecognitivesearch",
-	"displayName": "Azure Cognitive Search",
-	"version": "0.0.1",
-	"private": false,
-	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
-	"bugs": {
-		"url": "https://github.com/CodeEditorLand/Foundation/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
+	"activationEvents": [
+		"onView:azureCognitiveSearch",
+		"onCommand:azureCognitiveSearch.refresh",
+		"onCommand:azureCognitiveSearch.openInPortal",
+		"onCommand:azureCognitiveSearch.selectSubscriptions",
+		"onCommand:azureCognitiveSearch.createDocument",
+		"onCommand:azureCognitiveSearch.createDataSource",
+		"onCommand:azureCognitiveSearch.createIndexer",
+		"onCommand:azureCognitiveSearch.createSkillset",
+		"onCommand:azureCognitiveSearch.createSynonymMap",
+		"onCommand:azureCognitiveSearch.createAlias",
+		"onCommand:azureCognitiveSearch.deleteDocument",
+		"onCommand:azureCognitiveSearch.deleteDataSource",
+		"onCommand:azureCognitiveSearch.deleteIndexer",
+		"onCommand:azureCognitiveSearch.deleteSkillset",
+		"onCommand:azureCognitiveSearch.deleteSynonymMap",
+		"onCommand:azureCognitiveSearch.deleteAlias",
+		"onCommand:azureCognitiveSearch.search",
+		"onCommand:azureCognitiveSearch.searchDoc",
+		"onCommand:azureCognitiveSearch.resetIndexer",
+		"onCommand:azureCognitiveSearch.runIndexer",
+		"onCommand:azureCognitiveSearch.copyAdminKey",
+		"onCommand:azureCognitiveSearch.copyQueryKey",
+		"onCommand:azureCognitiveSearch.createSearchService",
+		"onCommand:azureCognitiveSearch.deleteSearchService"
+	],
+	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
 	"author": {
-		"name": "Playform",
 		"email": "Hello@Playform.Cloud",
+		"name": "Playform",
 		"url": "https://playform.cloud"
 	},
-	"type": "module",
-	"main": "main",
-	"scripts": {
-		"all": "npm i && npm run lint && npm test",
-		"build": "tsc",
-		"compile": "tsc -watch",
-		"package": "vsce package",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"vscode:prepublish": "npm run webpack-prod",
-		"webpack": "npm run build && gulp webpack-dev",
-		"webpack-prod": "npm run build && gulp webpack-prod",
-		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+	"bugs": {
+		"url": "https://github.com/CodeEditorLand/Foundation/issues"
 	},
 	"contributes": {
 		"commands": [
@@ -451,32 +454,6 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"onView:azureCognitiveSearch",
-		"onCommand:azureCognitiveSearch.refresh",
-		"onCommand:azureCognitiveSearch.openInPortal",
-		"onCommand:azureCognitiveSearch.selectSubscriptions",
-		"onCommand:azureCognitiveSearch.createDocument",
-		"onCommand:azureCognitiveSearch.createDataSource",
-		"onCommand:azureCognitiveSearch.createIndexer",
-		"onCommand:azureCognitiveSearch.createSkillset",
-		"onCommand:azureCognitiveSearch.createSynonymMap",
-		"onCommand:azureCognitiveSearch.createAlias",
-		"onCommand:azureCognitiveSearch.deleteDocument",
-		"onCommand:azureCognitiveSearch.deleteDataSource",
-		"onCommand:azureCognitiveSearch.deleteIndexer",
-		"onCommand:azureCognitiveSearch.deleteSkillset",
-		"onCommand:azureCognitiveSearch.deleteSynonymMap",
-		"onCommand:azureCognitiveSearch.deleteAlias",
-		"onCommand:azureCognitiveSearch.search",
-		"onCommand:azureCognitiveSearch.searchDoc",
-		"onCommand:azureCognitiveSearch.resetIndexer",
-		"onCommand:azureCognitiveSearch.runIndexer",
-		"onCommand:azureCognitiveSearch.copyAdminKey",
-		"onCommand:azureCognitiveSearch.copyQueryKey",
-		"onCommand:azureCognitiveSearch.createSearchService",
-		"onCommand:azureCognitiveSearch.deleteSearchService"
-	],
 	"dependencies": {
 		"axios": "^0.21.2",
 		"azure-arm-resource": "^7.3.0",
@@ -486,6 +463,7 @@
 		"vscode-azureextensionui": "^0.33.1",
 		"vscode-extension-telemetry": "^0.1.6"
 	},
+	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
 	"devDependencies": {
 		"@types/fs-extra": "^8.1.1",
 		"@types/glob": "^7.1.1",
@@ -502,23 +480,45 @@
 		"ts-loader": "^6.0.4",
 		"ts-node": "^8.3.0",
 		"typescript": "^3.8.3",
-		"typescript-esbuild": "0.4.5",
+		"typescript-esbuild": "",
 		"vscode-azureextensiondev": "^0.4.0",
 		"vscode-test": "^1.3.0",
 		"webpack": "^4.42.0",
 		"webpack-cli": "^3.3.6"
 	},
+	"displayName": "Azure Cognitive Search",
 	"extensionDependencies": [
 		"ms-vscode.azure-account"
 	],
-	"publishConfig": {
-		"access": "public"
-	},
-	"icon": "resources/AzureSearch.png",
 	"galleryBanner": {
 		"color": "#3c3c3c",
 		"theme": "dark"
 	},
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"icon": "resources/AzureSearch.png",
+	"license": "SEE LICENSE IN LICENSE",
+	"main": "main",
+	"name": "vscode-azurecognitivesearch",
 	"preview": true,
-	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217"
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"scripts": {
+		"all": "npm i && npm run lint && npm test",
+		"build": "tsc",
+		"compile": "tsc -watch",
+		"package": "vsce package",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+		"vscode:prepublish": "npm run webpack-prod",
+		"webpack": "npm run build && gulp webpack-dev",
+		"webpack-prod": "npm run build && gulp webpack-prod",
+		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+	},
+	"type": "module",
+	"version": "0.0.1"
 }
