@@ -458,16 +458,16 @@
 		"onCommand:azureCognitiveSearch.deleteSearchService"
 	],
 	"dependencies": {
-		"axios": "0.21.2",
-		"fs-extra": "8.1.0"
+		"axios": "1.7.1",
+		"fs-extra": "11.2.0"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "8.1.1",
-		"@types/glob": "7.1.1",
-		"@types/node": "13.11.0",
-		"file-loader": "4.1.0",
-		"glob": "7.1.6",
-		"ts-loader": "6.0.4"
+		"@types/fs-extra": "11.0.4",
+		"@types/glob": "8.1.0",
+		"@types/node": "20.12.12",
+		"file-loader": "6.2.0",
+		"glob": "10.3.15",
+		"ts-loader": "9.5.1"
 	},
 	"extensionDependencies": [
 		"ms-vscode.azure-account"
