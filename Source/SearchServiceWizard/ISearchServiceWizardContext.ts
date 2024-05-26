@@ -1,11 +1,11 @@
-import { SearchService } from 'azure-arm-search/lib/models';
-import { IResourceGroupWizardContext } from 'vscode-azureextensionui';
+import type { SearchService } from "azure-arm-search/lib/models";
+import type { IResourceGroupWizardContext } from "vscode-azureextensionui";
 
-export interface ISearchServiceWizardContext extends IResourceGroupWizardContext {
-
-    newServiceName?: string;
-    sku?: string;
-    partitionCount?: number;
-    replicaCount?: number;
-    searchService?: SearchService;
+export interface ISearchServiceWizardContext
+	extends IResourceGroupWizardContext {
+	newServiceName?: string;
+	sku?: string;
+	partitionCount?: number;
+	replicaCount?: number;
+	searchService?: SearchService;
 }
