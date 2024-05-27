@@ -3,72 +3,47 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import {
-	SearchManagementClient,
-	type SearchManagementModels,
-} from "azure-arm-search";
-import {
-	AzureWizardExecuteStep,
-	createAzureClient,
-} from "vscode-azureextensionui";
-import { ext } from "../extensionVariables";
-import { nonNullProp } from "../utils/nonNull";
-import type { ISearchServiceWizardContext } from "./ISearchServiceWizardContext";
 
-export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
-	extends AzureWizardExecuteStep<T>
-	implements SearchServiceCreateStep<T>
-{
-	public priority = 130;
+import { SearchManagementClient, SearchManagementModels } from 'azure-arm-search';
+import { nonNullProp } from '../utils/nonNull';
+import { AzureWizardExecuteStep, createAzureClient } from 'vscode-azureextensionui';
+import { ext } from '../extensionVariables';
+import { ISearchServiceWizardContext } from './ISearchServiceWizardContext';
 
-	public constructor() {
-		super();
-	}
+export class SearchServiceCreateStep<T extends ISearchServiceWizardContext> extends AzureWizardExecuteStep<T> implements SearchServiceCreateStep<T> {
+    public priority: number = 130;
 
-	public async execute(wizardContext: T): Promise<void> {
-		const newServiceName: string = nonNullProp(
-			wizardContext,
-			"newServiceName",
-		);
-		const skuName: string = nonNullProp(wizardContext, "sku");
-		const locationName: string = nonNullProp(
-			nonNullProp(wizardContext, "location"),
-			"name",
-		);
-		const rgName: string = nonNullProp(
-			nonNullProp(wizardContext, "resourceGroup"),
-			"name",
-		);
-		const replicaCount: number = nonNullProp(wizardContext, "replicaCount");
-		const partitionCount: number = nonNullProp(
-			wizardContext,
-			"partitionCount",
-		);
+    public constructor() {
+        super();
+    }
 
-		const creatingSearchService: string = `Creating search serivce "${newServiceName}" in location "${locationName}" with sku "${skuName}"...`;
-		ext.outputChannel.appendLog(creatingSearchService);
-		const searchManagementClient: SearchManagementClient =
-			createAzureClient(wizardContext, SearchManagementClient);
+    public async execute(wizardContext: T): Promise<void> {
+        const newServiceName: string = nonNullProp(wizardContext, 'newServiceName');
+        const skuName: string = nonNullProp(wizardContext, 'sku');
+        const locationName: string = nonNullProp(nonNullProp(wizardContext, 'location'), 'name');
+        const rgName: string = nonNullProp(nonNullProp(wizardContext, 'resourceGroup'), 'name');
+        const replicaCount: number = nonNullProp(wizardContext, 'replicaCount');
+        const partitionCount: number = nonNullProp(wizardContext, 'partitionCount');
 
-		const newSearchService: SearchManagementModels.SearchService = {
-			sku: { name: skuName },
-			replicaCount: replicaCount,
-			partitionCount: partitionCount,
-			location: locationName,
-		};
+        const creatingSearchService: string = `Creating search serivce "${newServiceName}" in location "${locationName}" with sku "${skuName}"...`;
+        ext.outputChannel.appendLog(creatingSearchService);
+        const searchManagementClient: SearchManagementClient = createAzureClient(wizardContext, SearchManagementClient);
 
-		wizardContext.searchService =
-			await searchManagementClient.services.beginCreateOrUpdate(
-				rgName,
-				newServiceName,
-				newSearchService,
-			);
+        const newSearchService: SearchManagementModels.SearchService = {
+            sku: {name: skuName},
+            replicaCount: replicaCount,
+            partitionCount: partitionCount,
+            location: locationName
+        };
 
-		const createdSearchService: string = `Successfully created search service "${newServiceName}".`;
-		ext.outputChannel.appendLog(createdSearchService);
-	}
+        wizardContext.searchService  = await searchManagementClient.services.beginCreateOrUpdate(rgName, newServiceName, newSearchService)
 
-	public shouldExecute(wizardContext: T): boolean {
-		return !wizardContext.searchService;
-	}
+
+        const createdSearchService: string = `Successfully created search service "${newServiceName}".`;
+        ext.outputChannel.appendLog(createdSearchService);
+    }
+
+    public shouldExecute(wizardContext: T): boolean {
+        return !wizardContext.searchService;
+    }
 }
