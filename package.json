@@ -464,7 +464,7 @@
 	"devDependencies": {
 		"@types/fs-extra": "11.0.4",
 		"@types/glob": "8.1.0",
-		"@types/node": "20.14.11",
+		"@types/node": "20.14.12",
 		"file-loader": "6.2.0",
 		"glob": "11.0.0",
 		"ts-loader": "9.5.1"
