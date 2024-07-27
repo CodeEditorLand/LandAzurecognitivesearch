@@ -8,26 +8,32 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 import { SearchResourceListTreeItem } from "./SearchResourceListTreeItem";
 import { getResourcesPath } from "./constants";
 import { Uri } from "vscode";
-import * as path from 'path';
+import * as path from "path";
 
 export class SynonymMapListTreeItem extends SearchResourceListTreeItem {
-    public static readonly contextValue: string = "azureCognitiveSearchSynonymMapList";
-    public static readonly itemContextValue: string = "azureCognitiveSearchSynonymMap";
+	public static readonly contextValue: string =
+		"azureCognitiveSearchSynonymMapList";
+	public static readonly itemContextValue: string =
+		"azureCognitiveSearchSynonymMap";
 
-    public constructor(parent: SearchServiceTreeItem, searchClient: SimpleSearchClient) {
-        super(parent,
-              SynonymMapListTreeItem.contextValue,
-              SynonymMapListTreeItem.itemContextValue,
-              "Synonym Maps",
-              SimpleSearchClient.SynonymMaps,
-              "synonym map",
-              "azssymmap",
-              searchClient);
-    }
+	public constructor(
+		parent: SearchServiceTreeItem,
+		searchClient: SimpleSearchClient,
+	) {
+		super(
+			parent,
+			SynonymMapListTreeItem.contextValue,
+			SynonymMapListTreeItem.itemContextValue,
+			"Synonym Maps",
+			SimpleSearchClient.SynonymMaps,
+			"synonym map",
+			"azssymmap",
+			searchClient,
+		);
+	}
 
-    public iconPath: { light: string | Uri; dark: string | Uri } = {
-        light: path.join(getResourcesPath(), 'light', 'synonyms.svg'),
-        dark: path.join(getResourcesPath(), 'dark', 'synonyms.svg')
-    };
-
+	public iconPath: { light: string | Uri; dark: string | Uri } = {
+		light: path.join(getResourcesPath(), "light", "synonyms.svg"),
+		dark: path.join(getResourcesPath(), "dark", "synonyms.svg"),
+	};
 }

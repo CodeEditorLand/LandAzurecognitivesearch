@@ -1,31 +1,16 @@
 {
-	"activationEvents": [
-		"onView:azureCognitiveSearch",
-		"onCommand:azureCognitiveSearch.refresh",
-		"onCommand:azureCognitiveSearch.openInPortal",
-		"onCommand:azureCognitiveSearch.selectSubscriptions",
-		"onCommand:azureCognitiveSearch.createDocument",
-		"onCommand:azureCognitiveSearch.createDataSource",
-		"onCommand:azureCognitiveSearch.createIndexer",
-		"onCommand:azureCognitiveSearch.createSkillset",
-		"onCommand:azureCognitiveSearch.createSynonymMap",
-		"onCommand:azureCognitiveSearch.createAlias",
-		"onCommand:azureCognitiveSearch.deleteDocument",
-		"onCommand:azureCognitiveSearch.deleteDataSource",
-		"onCommand:azureCognitiveSearch.deleteIndexer",
-		"onCommand:azureCognitiveSearch.deleteSkillset",
-		"onCommand:azureCognitiveSearch.deleteSynonymMap",
-		"onCommand:azureCognitiveSearch.deleteAlias",
-		"onCommand:azureCognitiveSearch.search",
-		"onCommand:azureCognitiveSearch.searchDoc",
-		"onCommand:azureCognitiveSearch.resetIndexer",
-		"onCommand:azureCognitiveSearch.runIndexer",
-		"onCommand:azureCognitiveSearch.copyAdminKey",
-		"onCommand:azureCognitiveSearch.copyQueryKey",
-		"onCommand:azureCognitiveSearch.createSearchService",
-		"onCommand:azureCognitiveSearch.deleteSearchService"
-	],
-	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+	"name": "vscode-azurecognitivesearch",
+	"displayName": "Azure Cognitive Search",
+	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
+	"main": "main",
+	"scripts": {
+		"all": "npm i && npm run lint && npm test",
+		"build": "tsc",
+		"compile": "tsc -watch",
+		"webpack": "npm run build && gulp webpack-dev",
+		"webpack-prod": "npm run build && gulp webpack-prod",
+		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
+	},
 	"contributes": {
 		"commands": [
 			{
@@ -446,11 +431,36 @@
 			]
 		}
 	},
+	"activationEvents": [
+		"onView:azureCognitiveSearch",
+		"onCommand:azureCognitiveSearch.refresh",
+		"onCommand:azureCognitiveSearch.openInPortal",
+		"onCommand:azureCognitiveSearch.selectSubscriptions",
+		"onCommand:azureCognitiveSearch.createDocument",
+		"onCommand:azureCognitiveSearch.createDataSource",
+		"onCommand:azureCognitiveSearch.createIndexer",
+		"onCommand:azureCognitiveSearch.createSkillset",
+		"onCommand:azureCognitiveSearch.createSynonymMap",
+		"onCommand:azureCognitiveSearch.createAlias",
+		"onCommand:azureCognitiveSearch.deleteDocument",
+		"onCommand:azureCognitiveSearch.deleteDataSource",
+		"onCommand:azureCognitiveSearch.deleteIndexer",
+		"onCommand:azureCognitiveSearch.deleteSkillset",
+		"onCommand:azureCognitiveSearch.deleteSynonymMap",
+		"onCommand:azureCognitiveSearch.deleteAlias",
+		"onCommand:azureCognitiveSearch.search",
+		"onCommand:azureCognitiveSearch.searchDoc",
+		"onCommand:azureCognitiveSearch.resetIndexer",
+		"onCommand:azureCognitiveSearch.runIndexer",
+		"onCommand:azureCognitiveSearch.copyAdminKey",
+		"onCommand:azureCognitiveSearch.copyQueryKey",
+		"onCommand:azureCognitiveSearch.createSearchService",
+		"onCommand:azureCognitiveSearch.deleteSearchService"
+	],
 	"dependencies": {
 		"axios": "0.21.2",
 		"fs-extra": "8.1.0"
 	},
-	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
 	"devDependencies": {
 		"@types/fs-extra": "8.1.1",
 		"@types/glob": "7.1.1",
@@ -459,24 +469,14 @@
 		"glob": "7.1.6",
 		"ts-loader": "6.0.4"
 	},
-	"displayName": "Azure Cognitive Search",
 	"extensionDependencies": [
 		"ms-vscode.azure-account"
 	],
+	"icon": "resources/AzureSearch.png",
 	"galleryBanner": {
 		"color": "#3c3c3c",
 		"theme": "dark"
 	},
-	"icon": "resources/AzureSearch.png",
-	"main": "main",
-	"name": "vscode-azurecognitivesearch",
 	"preview": true,
-	"scripts": {
-		"all": "npm i && npm run lint && npm test",
-		"build": "tsc",
-		"compile": "tsc -watch",
-		"webpack": "npm run build && gulp webpack-dev",
-		"webpack-prod": "npm run build && gulp webpack-prod",
-		"webpack-profile": "webpack --profile --json --mode production > webpack-stats.json && echo Use http://webpack.github.io/analyse to analyze the stats"
-	}
+	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217"
 }
