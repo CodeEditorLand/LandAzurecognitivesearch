@@ -447,7 +447,7 @@
 		}
 	},
 	"dependencies": {
-		"axios": "1.7.3",
+		"axios": "1.7.4",
 		"fs-extra": "11.2.0"
 	},
 	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
