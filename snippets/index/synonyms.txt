@@ -1,6 +1,0 @@
-{
-    "format":"solr",
-    "synonyms": "
-       USA, United States, United States of America\n
-       Washington, Wash., WA => WA\n"
- }
