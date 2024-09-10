@@ -1,0 +1,307 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Azure Search Data Source",
+    "type": "object",
+    "description": "Represents a datasource definition, which can be used to configure an indexer.",
+    "properties": {
+        "name": {
+            "externalDocs": {
+              "url": "https://docs.microsoft.com/rest/api/searchservice/Naming-rules"
+            },
+            "type": "string",
+            "description": "The name of the datasource."
+        },
+        "description": {
+            "type": ["string", "null"],
+            "description": "The description of the datasource."
+        },
+        "type": {
+            "$ref": "#/definitions/SearchIndexerDataSourceType",
+            "description": "The type of the datasource."
+        },
+        "subtype": {
+          "type": ["string", "null"],
+          "description": "The subtype of the datasource."
+        },
+        "credentials": {
+          "$ref": "#/definitions/DataSourceCredentials",
+          "description": "Credentials for the datasource."
+        },
+        "container": {
+          "$ref": "#/definitions/SearchIndexerDataContainer",
+          "description": "The data container for the datasource."
+        },
+        "identity": {
+          "$ref": "#/definitions/SearchIndexerDataIdentity",
+          "description": "An explicit managed identity to use for this datasource. If not specified and the connection string is a managed identity, the system-assigned managed identity is used. If not specified, the value remains unchanged. If \"none\" is specified, the value of this property is cleared."
+        },
+        "dataChangeDetectionPolicy": {
+            "$ref": "#/definitions/DataChangeDetectionPolicy",
+            "description": "The data change detection policy for the datasource."
+        },
+        "dataDeletionDetectionPolicy": {
+            "$ref": "#/definitions/DataDeletionDetectionPolicy",
+            "description": "The data deletion detection policy for the datasource."
+        },
+        "encryptionKey": {
+          "$ref": "#/definitions/SearchResourceEncryptionKey",
+          "description": "A description of an encryption key that you create in Azure Key Vault. This key is used to provide an additional level of encryption-at-rest for your data when you want full assurance that no one, not even Microsoft, can decrypt your data in Azure Cognitive Search. Once you have encrypted your data, it will always remain encrypted. Azure Cognitive Search will ignore attempts to set this property to null. You can change this property as needed if you want to rotate your encryption key; Your data will be unaffected. Encryption with customer-managed keys is not available for free search services, and is only available for paid services created on or after January 1, 2019.",
+          "externalDocs": {
+            "url": "https://aka.ms/azure-search-encryption-with-cmk"
+          }
+      }
+    },
+    "required": [
+        "name",
+        "type",
+        "credentials",
+        "container"
+    ],
+    "additionalProperties": false,
+    "definitions": {
+      "DataSourceCredentials": {
+          "properties": {
+            "connectionString": {
+              "externalDocs": {
+                "url": "https://docs.microsoft.com/rest/api/searchservice/Create-Data-Source"
+              },
+              "type": ["string", "null"],
+              "description": "The connection string for the datasource. Set to '<unchanged>' if you do not want the connection string updated."
+            }
+          },
+          "description": "Represents credentials that can be used to connect to a datasource."
+        },
+        "SearchIndexerDataContainer": {
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the table or view (for Azure SQL data source) or collection (for DocumentDB data source) that will be indexed."
+            },
+            "query": {
+              "type": ["string", "null"],
+              "description": "A query that is applied to this data container. The syntax and meaning of this parameter is datasource-specific."
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "description": "Represents information about the entity (such as Azure SQL table or DocumentDb collection) that will be indexed."
+        },
+        "SearchIndexerDataIdentity": {
+          "discriminator": "@odata.type",
+          "properties": {
+            "@odata.type": {
+              "type": "string",
+              "description": "Identifies the concrete type of the identity."
+            }
+          },
+          "required": [
+            "@odata.type"
+          ],
+          "description": "Abstract base type for data identities.",
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "@odata.type": { 
+                    "const": "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/SearchIndexerDataNoneIdentity"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "@odata.type": { 
+                    "const": "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/SearchIndexerDataUserAssignedIdentity"
+              }
+            }
+          ]
+        },
+        "SearchIndexerDataNoneIdentity": {
+          "description": "Clears the identity property of a datasource.",
+          "x-ms-discriminator-value": "#Microsoft.Azure.Search.SearchIndexerDataNoneIdentity"
+        },
+        "SearchIndexerDataUserAssignedIdentity": {
+          "description": "Specifies the identity for a datasource to use.",
+          "x-ms-discriminator-value": "#Microsoft.Azure.Search.SearchIndexerDataUserAssignedIdentity",
+          "properties": {
+            "userAssignedIdentity": {
+              "type": "string",
+              "description": "The fully qualified Azure resource Id of a user assigned managed identity typically in the form \"/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId\" that should have been assigned to the search service."
+            }
+          },
+          "required": [
+            "userAssignedIdentity"
+          ]
+        },
+        "DataChangeDetectionPolicy": {
+          "type": ["object", "null"],
+          "properties": {
+            "@odata.type": {
+              "type": "string",
+              "description": "Identifies the concrete type of the data change detection policy.",
+              "enum": [
+                  "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy",
+                  "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "@odata.type": { 
+                    "const": "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/HighWaterMarkChangeDetectionPolicy"
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "@odata.type": { 
+                    "const": "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/SqlIntegratedChangeTrackingPolicy"
+              }
+            }
+          ],
+          "required": [
+            "@odata.type"
+          ],
+          "description": "Base type for data change detection policies."
+        },
+        "HighWaterMarkChangeDetectionPolicy": {
+          "description": "Defines a data change detection policy that captures changes based on the value of a high water mark column.",
+          "x-ms-discriminator-value": "#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy",
+          "properties": {
+            "highWaterMarkColumnName": {
+              "type": "string",
+              "description": "The name of the high water mark column."
+            }
+          },
+          "required": [
+            "highWaterMarkColumnName"
+          ]
+        },
+        "SqlIntegratedChangeTrackingPolicy": {
+          "description": "Defines a data change detection policy that captures changes using the Integrated Change Tracking feature of Azure SQL Database.",
+          "x-ms-discriminator-value": "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy"
+        },
+        "DataDeletionDetectionPolicy": {
+          "type": ["object", "null"],
+          "discriminator": "@odata.type",
+          "properties": {
+            "@odata.type": {
+              "type": "string"
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "@odata.type": { 
+                    "const": "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy"
+                  }
+                }
+              },
+              "then": {
+                "$ref": "#/definitions/SoftDeleteColumnDeletionDetectionPolicy"
+              }
+            }
+          ],
+          "required": [
+            "@odata.type"
+          ],
+          "description": "Abstract base class for data deletion detection policies."
+        },
+        "SoftDeleteColumnDeletionDetectionPolicy": {
+          "description": "Defines a data deletion detection policy that implements a soft-deletion strategy. It determines whether an item should be deleted based on the value of a designated 'soft delete' column.",
+          "x-ms-discriminator-value": "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+          "properties": {
+            "softDeleteColumnName": {
+              "type": "string",
+              "description": "The name of the column to use for soft-deletion detection."
+            },
+            "softDeleteMarkerValue": {
+              "type": "string",
+              "description": "The marker value that identifies an item as deleted."
+            }
+          }
+        },
+        "SearchIndexerDataSourceType": {
+          "type": "string",
+          "enum": [
+            "azuresql",
+            "cosmosdb",
+            "azureblob",
+            "azuretable",
+            "mysql",
+            "adlsgen2"
+          ],
+          "description": "Defines the type of a datasource."
+        },
+        "SearchResourceEncryptionKey": {
+          "type": ["object", "null"],
+          "description": "A customer-managed encryption key in Azure Key Vault. Keys that you create and manage can be used to encrypt or decrypt data-at-rest in Azure Cognitive Search, such as indexes and synonym maps.",
+          "properties": {
+              "keyVaultKeyName": {
+                  "type": "string",
+                  "description": "The name of your Azure Key Vault key to be used to encrypt your data at rest."
+              },
+              "keyVaultKeyVersion": {
+                  "type": "string",
+                  "description": "The version of your Azure Key Vault key to be used to encrypt your data at rest."
+              },
+              "keyVaultUri": {
+                  "type": "string",
+                  "description": "The URI of your Azure Key Vault, also referred to as DNS name, that contains the key to be used to encrypt your data at rest. An example URI might be https://my-keyvault-name.vault.azure.net."
+              },
+              "accessCredentials": {
+                  "$ref": "#/definitions/AzureActiveDirectoryApplicationCredentials",
+                  "description": "Optional Azure Active Directory credentials used for accessing your Azure Key Vault. Not required if using managed identity instead.",
+                  "externalDocs": {
+                      "url": "https://aka.ms/azure-search-msi"
+                  }
+              }
+          },
+          "required": [
+              "keyVaultKeyName",
+              "keyVaultKeyVersion",
+              "keyVaultUri"
+          ]
+      },
+      "AzureActiveDirectoryApplicationCredentials": {
+          "type": ["object", "null"],
+          "properties": {
+            "applicationId": {
+              "type": "string",
+              "description": "An AAD Application ID that was granted the required access permissions to the Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused with the Object ID for your AAD Application."
+            },
+            "applicationSecret": {
+              "type": ["string", "null"],
+              "description": "The authentication key of the specified AAD application."
+            }
+          },
+          "required": [
+            "applicationId"
+          ],
+          "description": "Credentials of a registered application created for your search service, used for authenticated access to the encryption keys stored in Azure Key Vault."
+        }
+    }
+}
