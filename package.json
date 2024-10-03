@@ -447,17 +447,17 @@
 		}
 	},
 	"dependencies": {
-		"axios": "^1.7.7",
-		"fs-extra": "^11.2.0"
+		"axios": "1.7.7",
+		"fs-extra": "11.2.0"
 	},
 	"description": "Manage your Azure Cognitive Search services, create indexes, add documents, search, and more.",
 	"devDependencies": {
-		"@types/fs-extra": "^11.0.4",
-		"@types/glob": "^8.1.0",
-		"@types/node": "^22.7.4",
-		"file-loader": "^6.2.0",
-		"glob": "^11.0.0",
-		"ts-loader": "^9.5.1"
+		"@types/fs-extra": "11.0.4",
+		"@types/glob": "8.1.0",
+		"@types/node": "22.7.4",
+		"file-loader": "6.2.0",
+		"glob": "11.0.0",
+		"ts-loader": "9.5.1"
 	},
 	"displayName": "Azure Cognitive Search",
 	"extensionDependencies": [
