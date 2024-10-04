@@ -3,40 +3,50 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { AzureTreeItem, AzureParentTreeItem } from "vscode-azureextensionui";
-import { IDocumentRepository } from "./IDocumentRepository";
+import * as path from "path";
 import { SearchService } from "azure-arm-search/lib/models";
-import { getResourcesPath } from "./constants";
 import { Uri } from "vscode";
-import * as path from 'path';
+import { AzureParentTreeItem, AzureTreeItem } from "vscode-azureextensionui";
 
-export class ServiceDetailsTreeItem extends AzureTreeItem implements IDocumentRepository {
-    public readonly commandId: string = "azureCognitiveSearch.openDocument";
-    public readonly contextValue: string = "azureCognitiveSearchServiceDetails";
-    public readonly label: string = "Service Details";
-    public readonly namePrefix: string;
-    readonly itemName: string;
-    readonly itemKind: string = "service";
-    readonly extension: string = "azssvc";
+import { getResourcesPath } from "./constants";
+import { IDocumentRepository } from "./IDocumentRepository";
 
-    public constructor(
-        parent: AzureParentTreeItem,
-        private readonly searchService: SearchService) {
-        super(parent);
-        this.itemName = searchService.name || "";
-        this.namePrefix = `service-${searchService.name}`;
-    }
+export class ServiceDetailsTreeItem
+	extends AzureTreeItem
+	implements IDocumentRepository
+{
+	public readonly commandId: string = "azureCognitiveSearch.openDocument";
+	public readonly contextValue: string = "azureCognitiveSearchServiceDetails";
+	public readonly label: string = "Service Details";
+	public readonly namePrefix: string;
+	readonly itemName: string;
+	readonly itemKind: string = "service";
+	readonly extension: string = "azssvc";
 
-    public iconPath: { light: string | Uri; dark: string | Uri } = {
-        light: path.join(getResourcesPath(), 'light', 'info.svg'),
-        dark: path.join(getResourcesPath(), 'dark', 'info.svg')
-    };
+	public constructor(
+		parent: AzureParentTreeItem,
+		private readonly searchService: SearchService,
+	) {
+		super(parent);
+		this.itemName = searchService.name || "";
+		this.namePrefix = `service-${searchService.name}`;
+	}
 
-    async readContent(): Promise<{ content: any; etag?: string | undefined; } | undefined> {
-        return { content: this.searchService };
-    }
+	public iconPath: { light: string | Uri; dark: string | Uri } = {
+		light: path.join(getResourcesPath(), "light", "info.svg"),
+		dark: path.join(getResourcesPath(), "dark", "info.svg"),
+	};
 
-    async updateContent(content: any, etag?: string | undefined): Promise<void> {
-        throw new Error("Updating service details not supported.");
-    }
+	async readContent(): Promise<
+		{ content: any; etag?: string | undefined } | undefined
+	> {
+		return { content: this.searchService };
+	}
+
+	async updateContent(
+		content: any,
+		etag?: string | undefined,
+	): Promise<void> {
+		throw new Error("Updating service details not supported.");
+	}
 }

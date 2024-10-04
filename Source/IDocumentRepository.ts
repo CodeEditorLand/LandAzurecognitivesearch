@@ -4,15 +4,15 @@
  *--------------------------------------------------------------------------------------------*/
 
 export interface IDocumentRepository {
-    readonly namePrefix: string;
+	readonly namePrefix: string;
 
-    readonly itemName: string;
+	readonly itemName: string;
 
-    readonly itemKind: string;
+	readonly itemKind: string;
 
-    readonly extension: string;
+	readonly extension: string;
 
-    readContent(): Promise<{ content: any, etag?: string } | undefined>;
+	readContent(): Promise<{ content: any; etag?: string } | undefined>;
 
-    updateContent(content: any, etag?: string): Promise<void>;
+	updateContent(content: any, etag?: string): Promise<void>;
 }
