@@ -30,6 +30,7 @@ export class SimpleSearchClient {
 			"indexes",
 			"$select=name,fields",
 		);
+
 		return r.data.value;
 	}
 
@@ -38,6 +39,7 @@ export class SimpleSearchClient {
 			resource,
 			"$select=name",
 		);
+
 		return r.data.value.map((i) => i.name);
 	}
 
@@ -46,6 +48,7 @@ export class SimpleSearchClient {
 		name: string,
 	): Promise<{ content: any; etag: string }> {
 		let r = await this.httpGet<any>(`${resource}/${name}`);
+
 		return { content: r.data, etag: r.headers["etag"] };
 	}
 
@@ -54,6 +57,7 @@ export class SimpleSearchClient {
 		content: any,
 	): Promise<{ content: any; etag: any }> {
 		let r = await this.httpPost(resource, content);
+
 		return { content: r.data, etag: r.headers["etag"] };
 	}
 
@@ -84,6 +88,7 @@ export class SimpleSearchClient {
 		raw: boolean = false,
 	): Promise<QueryResponse> {
 		let r = await this.httpGet(`indexes/${indexName}/docs`, query);
+
 		if (!raw) {
 			this.fixupQueryResponse(r.data);
 		}
@@ -99,6 +104,7 @@ export class SimpleSearchClient {
 			`indexes/${indexName}/docs/search`,
 			JSON.parse(query),
 		);
+
 		if (!raw) {
 			this.fixupQueryResponse(r.data);
 		}
@@ -108,12 +114,15 @@ export class SimpleSearchClient {
 	public async queryNext(nextLink: string): Promise<QueryResponse> {
 		let r = await this.httpGetUrl(nextLink);
 		this.fixupQueryResponse(r.data);
+
 		return r.data;
 	}
 
 	public async lookupDocument(indexName: string, key: string): Promise<any> {
 		const encodedKey = encodeURIComponent(key);
+
 		let r = await this.httpGet(`indexes/${indexName}/docs/${encodedKey}`);
+
 		return r.data;
 	}
 
@@ -124,6 +133,7 @@ export class SimpleSearchClient {
 	): Promise<void> {
 		const shallowCopy = { ...doc };
 		shallowCopy["@search.action"] = createNew ? "mergeOrUpload" : "merge";
+
 		const batch = { value: [shallowCopy] };
 
 		await this.indexBatch(indexName, batch);
@@ -137,6 +147,7 @@ export class SimpleSearchClient {
 		const deletion: any = {};
 		deletion["@search.action"] = "delete";
 		deletion[keyName] = key;
+
 		const batch = { value: [deletion] };
 
 		await this.indexBatch(indexName, batch);
@@ -229,6 +240,7 @@ export class SimpleSearchClient {
 	): Promise<R> {
 		try {
 			const config = this.makeRequestConfig();
+
 			if (etag) {
 				config.headers["if-match"] = etag;
 			}
@@ -251,6 +263,7 @@ export class SimpleSearchClient {
 
 	private makeUrl(path: string, options: string = ""): string {
 		let suffix: string = this.cloudSuffix || "search.windows.net";
+
 		if (options !== "" && options[0] !== "&") {
 			options = "&" + options;
 		}

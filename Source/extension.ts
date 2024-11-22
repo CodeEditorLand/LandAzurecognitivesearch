@@ -51,11 +51,13 @@ import { SynonymMapListTreeItem } from "./SynonymMapListTreeItem";
 
 function readJson(path: string) {
 	const json = fs.readFileSync(path, "utf8");
+
 	return JSON.parse(json);
 }
 
 function getRandomSuffix(): string {
 	const buffer: Buffer = crypto.randomBytes(5);
+
 	return buffer.toString("hex");
 }
 
@@ -68,6 +70,7 @@ export async function activateInternal(
 	ext.context = context;
 
 	let reporter: TelemetryReporter | undefined;
+
 	try {
 		const { aiKey, name, version } = readJson(
 			context.asAbsolutePath("./package.json"),
@@ -346,7 +349,9 @@ export async function activateInternal(
 					// We retrieved the search service ARM object using the generic ARM client, not the Azure Search ARM client, which
 					// somehow messes with the fullId relative to what treeItem.openInPortal() expects, so calling the underlying function
 					// await treeItem.openInPortal();
+
 					let id = (<SearchServiceTreeItem>treeItem).searchService.id;
+
 					if (id !== undefined) {
 						openInPortal(treeItem.root, id);
 					}
@@ -370,6 +375,7 @@ export async function activateInternal(
 						DialogResponses.yes,
 						DialogResponses.cancel,
 					);
+
 					if (r === DialogResponses.yes) {
 						await treeItem.resetIndexer(actionContext);
 					}
@@ -393,6 +399,7 @@ export async function activateInternal(
 						DialogResponses.yes,
 						DialogResponses.cancel,
 					);
+
 					if (r === DialogResponses.yes) {
 						await treeItem.runIndexer(actionContext);
 					}
@@ -406,6 +413,7 @@ export async function activateInternal(
 				) => {
 					const message =
 						"The primary admin key has been copied to the clipboard";
+
 					if (!node) {
 						node =
 							await ext.tree.showTreeItemPicker<SearchServiceTreeItem>(
@@ -426,6 +434,7 @@ export async function activateInternal(
 				) => {
 					const message =
 						"The query key has been copied to the clipboard";
+
 					if (!node) {
 						node =
 							await ext.tree.showTreeItemPicker<SearchServiceTreeItem>(
@@ -461,6 +470,7 @@ export async function activateInternal(
 					const suppressCreateContext: ITreeItemPickerContext =
 						actionContext;
 					suppressCreateContext.suppressCreatePick = true;
+
 					if (!node) {
 						node = await ext.tree.showTreeItemPicker<AzureTreeItem>(
 							SearchServiceTreeItem.contextValue,
@@ -473,6 +483,7 @@ export async function activateInternal(
 						DialogResponses.yes,
 						DialogResponses.cancel,
 					);
+
 					if (r === DialogResponses.yes) {
 						await node.deleteTreeItem(actionContext);
 					}
@@ -506,6 +517,7 @@ export async function activateInternal(
 					doc: vscode.TextDocument,
 				) => {
 					_actionContext.telemetry.measurements.duration;
+
 					if (doc.uri.scheme === "search") {
 						searchResultDocumentProvider.unregisterContent(
 							doc.uri.path,
@@ -558,6 +570,7 @@ async function deleteResource(
 		DialogResponses.deleteResponse,
 		DialogResponses.cancel,
 	);
+
 	if (r === DialogResponses.deleteResponse) {
 		await treeItem.deleteTreeItem(actionContext);
 	}
@@ -583,10 +596,13 @@ async function search(
 		placeHolder: "search=....&$filter=...",
 		prompt: "Enter an Azure Cognitive Search query string. You can use search, $filter, $top, etc.",
 	});
+
 	const result = await indexItem.search(query);
+
 	const id = documentProvider.registerContent(
 		JSON.stringify(result, undefined, 4),
 	);
+
 	const doc = await vscode.workspace.openTextDocument(
 		vscode.Uri.parse(`search:${id}`),
 	);
@@ -603,6 +619,7 @@ function findSearchTarget(treeItem: AzExtTreeItem): IndexTreeItem | undefined {
 			ext.treeView.selection && ext.treeView.selection.length > 0
 				? ext.treeView.selection[0]
 				: undefined;
+
 		if (selected) {
 			if (selected.contextValue === DocumentListTreeItem.contextValue) {
 				indexItem = <IndexTreeItem>selected.parent;
@@ -617,7 +634,9 @@ function findSearchTarget(treeItem: AzExtTreeItem): IndexTreeItem | undefined {
 
 async function openSearchEditor(treeItem: IndexTreeItem): Promise<void> {
 	const suffix = getRandomSuffix();
+
 	const filename = "sandbox-" + suffix + ".azs";
+
 	const localPath = path.join(os.tmpdir(), "vscode-azs-editor", filename);
 	await fse.ensureFile(localPath);
 
@@ -647,6 +666,7 @@ async function searchToDocument(
 	documentProvider: SearchResultDocumentProvider,
 ): Promise<void> {
 	let text: string;
+
 	if (editor.selection.isEmpty) {
 		text = editor.document.lineAt(editor.selection.active.line).text;
 	} else {
@@ -668,7 +688,9 @@ async function searchToDocument(
 		);
 	} else {
 		const indexItem = <IndexTreeItem>ext.treeView.selection[0];
+
 		let result: any;
+
 		try {
 			result = await indexItem.search(text);
 		} catch (error) {
@@ -677,6 +699,7 @@ async function searchToDocument(
 		const id = documentProvider.registerContent(
 			JSON.stringify(result, undefined, 4),
 		);
+
 		const doc = await vscode.workspace.openTextDocument(
 			vscode.Uri.parse(`search:${id}`),
 		);

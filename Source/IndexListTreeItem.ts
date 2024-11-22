@@ -42,6 +42,7 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 	): Promise<AzExtTreeItem[]> {
 		// TODO: does the /indexes endpoint ever return a continuation link? I don't think so.
 		let indexes: Index[] = await this.searchClient.listIndexes();
+
 		return indexes.map(
 			(i) => new IndexTreeItem(this, this.searchClient, i),
 		);
@@ -59,7 +60,9 @@ export class IndexListTreeItem extends AzureParentTreeItem {
 
 	private makeItem(itemName?: string): EditableResourceTreeItem {
 		const name = itemName || "new";
+
 		const label = itemName ? undefined : "<new>";
+
 		const creating = !itemName;
 
 		return new EditableResourceTreeItem(

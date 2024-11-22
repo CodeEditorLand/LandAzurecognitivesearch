@@ -30,12 +30,15 @@ export class DocumentEditor implements vscode.Disposable {
 
 	public async showEditor(item: IDocumentRepository): Promise<void> {
 		const suffix = DocumentEditor.getRandomSuffix();
+
 		const filename = `${item.namePrefix}-${suffix}.${item.extension}`;
+
 		const localPath = path.join(os.tmpdir(), "vscode-azs-editor", filename);
 		await fse.ensureFile(localPath);
 		this.fileMap[localPath] = item;
 
 		const result = await item.readContent();
+
 		const defaultJson = DocumentEditor.getDefaultJson(item.itemKind);
 		await fse.writeJson(localPath, result ? result.content : defaultJson, {
 			spaces: 4,
@@ -52,8 +55,10 @@ export class DocumentEditor implements vscode.Disposable {
 		const filename = Object.keys(this.fileMap).find(
 			(f) => path.relative(doc.fileName, f) === "",
 		);
+
 		if (filename) {
 			const item = this.fileMap[filename];
+
 			const r: vscode.MessageItem | undefined =
 				await vscode.window.showWarningMessage(
 					`Saving these changes will update ${item.itemKind} '${item.itemName}'`,
@@ -72,6 +77,7 @@ export class DocumentEditor implements vscode.Disposable {
 
 	private static getRandomSuffix(): string {
 		const buffer: Buffer = crypto.randomBytes(5);
+
 		return buffer.toString("hex");
 	}
 
@@ -100,6 +106,7 @@ export class DocumentEditor implements vscode.Disposable {
 						},
 					],
 				};
+
 			case "synonym map":
 				return {
 					"name": "my-synonyms",
@@ -107,6 +114,7 @@ export class DocumentEditor implements vscode.Disposable {
 					"synonyms":
 						"USA, United States, United States of America\nWashington, Wash., WA => WA\n",
 				};
+
 			case "data source":
 				return {
 					"name": "my-datasource",
@@ -118,6 +126,7 @@ export class DocumentEditor implements vscode.Disposable {
 						"name": "",
 					},
 				};
+
 			case "skillset":
 				return {
 					"name": "my-skillset",
@@ -144,6 +153,7 @@ export class DocumentEditor implements vscode.Disposable {
 						},
 					],
 				};
+
 			case "indexer":
 				return {
 					"name": "my-indexer",
@@ -157,6 +167,7 @@ export class DocumentEditor implements vscode.Disposable {
 						},
 					],
 				};
+
 			case "alias":
 				return {
 					"name": "alias1",

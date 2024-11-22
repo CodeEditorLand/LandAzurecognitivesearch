@@ -37,6 +37,7 @@ export class SearchServiceNameStep<
 					await this.validateSearchServiceName(client, value),
 			})
 		).trim();
+
 		if (!wizardContext.relatedNameTask) {
 			wizardContext.relatedNameTask = this.generateRelatedName(
 				wizardContext,
@@ -65,6 +66,7 @@ export class SearchServiceNameStep<
 
 		const nameAvailabilityResult: CheckNameAvailabilityOutput =
 			await client.services.checkNameAvailability(name);
+
 		if (!nameAvailabilityResult.isNameAvailable) {
 			if (nameAvailabilityResult.message) {
 				return nameAvailabilityResult.message;

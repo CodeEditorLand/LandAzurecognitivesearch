@@ -101,6 +101,7 @@ export class DocumentTreeItem
 
 	private mapFields(fields: Array<any>): any {
 		var jsonSchema: any = {};
+
 		for (let field of fields) {
 			if (field.type == "Collection(Edm.ComplexType)") {
 				jsonSchema[field.name] = [this.mapFields(field.fields)];

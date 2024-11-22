@@ -47,6 +47,7 @@ export class DocumentListTreeItem extends AzureParentTreeItem {
 		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		let result: QueryResponse;
+
 		let key: Field = <Field>this.index.fields.find((f) => f.key);
 
 		if (clearCache || !this.nextLink) {

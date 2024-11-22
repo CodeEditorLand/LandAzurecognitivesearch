@@ -66,6 +66,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 			this.root,
 			ResourceManagementClient.ResourceManagementClient,
 		);
+
 		const services = !this._nextLink
 			? await resourceManagementClient.resources.list({
 					filter: "resourceType eq 'Microsoft.Search/searchServices'",

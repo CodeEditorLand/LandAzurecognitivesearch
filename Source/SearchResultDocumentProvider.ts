@@ -14,6 +14,7 @@ export class SearchResultDocumentProvider
 	public registerContent(content: string): string {
 		const key = `${this.id++}.json`;
 		this.contentMap[key] = content;
+
 		return key;
 	}
 
@@ -23,6 +24,7 @@ export class SearchResultDocumentProvider
 
 	public provideTextDocumentContent(uri: vscode.Uri): string {
 		const path: string = uri.path;
+
 		return this.contentMap[path];
 	}
 }

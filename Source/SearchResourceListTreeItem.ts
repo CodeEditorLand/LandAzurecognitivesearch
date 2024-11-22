@@ -36,6 +36,7 @@ export class SearchResourceListTreeItem extends AzureParentTreeItem {
 		let resources: string[] = await this.searchClient.listResources(
 			this.itemSet,
 		);
+
 		return resources.map((r) => this.makeItem(r));
 	}
 
@@ -51,7 +52,9 @@ export class SearchResourceListTreeItem extends AzureParentTreeItem {
 
 	private makeItem(itemName?: string): EditableResourceTreeItem {
 		const name = itemName || "new";
+
 		const label = itemName ? undefined : "<new>";
+
 		const creating = !itemName;
 
 		return new EditableResourceTreeItem(

@@ -93,6 +93,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 		switch (item.contextValue) {
 			case "azureCognitiveSearchIndexDetails":
 				return 1;
+
 			case DocumentListTreeItem.contextValue:
 				return 2;
 		}

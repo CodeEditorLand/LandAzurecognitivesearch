@@ -59,6 +59,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 		context: IActionContext,
 	): Promise<AzExtTreeItem[]> {
 		const keys = await this.getAdminKeys();
+
 		const searchClient = new SimpleSearchClient(
 			this.name,
 			<string>keys.primaryKey,
@@ -93,16 +94,22 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 		switch (item.contextValue) {
 			case "azureCognitiveSearchServiceDetails":
 				return 1;
+
 			case IndexListTreeItem.contextValue:
 				return 2;
+
 			case DataSourceListTreeItem.contextValue:
 				return 3;
+
 			case IndexerListTreeItem.contextValue:
 				return 4;
+
 			case SkillsetListTreeItem.contextValue:
 				return 5;
+
 			case SynonymMapListTreeItem.contextValue:
 				return 6;
+
 			case AliasListTreeItem.contextValue:
 				return 7;
 		}
@@ -115,16 +122,19 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 			this.resourceGroup,
 			this.name,
 		);
+
 		return keys;
 	}
 
 	public async createQueryKey(): Promise<QueryKey> {
 		const keyName = "vscode-" + this.getRandomSuffix();
+
 		const key = await this.searchManagementClient.queryKeys.create(
 			this.resourceGroup,
 			this.name,
 			keyName,
 		);
+
 		return key;
 	}
 
@@ -134,6 +144,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 				this.resourceGroup,
 				this.name,
 			);
+
 		if (keys.length === 0) {
 			return this.createQueryKey();
 		} else {
@@ -150,6 +161,7 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 
 	private getRandomSuffix(): string {
 		const buffer: Buffer = crypto.randomBytes(5);
+
 		return buffer.toString("hex");
 	}
 }
