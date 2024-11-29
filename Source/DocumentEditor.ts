@@ -34,18 +34,23 @@ export class DocumentEditor implements vscode.Disposable {
 		const filename = `${item.namePrefix}-${suffix}.${item.extension}`;
 
 		const localPath = path.join(os.tmpdir(), "vscode-azs-editor", filename);
+
 		await fse.ensureFile(localPath);
+
 		this.fileMap[localPath] = item;
 
 		const result = await item.readContent();
 
 		const defaultJson = DocumentEditor.getDefaultJson(item.itemKind);
+
 		await fse.writeJson(localPath, result ? result.content : defaultJson, {
 			spaces: 4,
 		});
 
 		const doc = await vscode.workspace.openTextDocument(localPath);
+
 		vscode.languages.setTextDocumentLanguage(doc, "json");
+
 		await vscode.window.showTextDocument(doc);
 	}
 
@@ -71,6 +76,7 @@ export class DocumentEditor implements vscode.Disposable {
 			}
 
 			const content: any = await fse.readJson(doc.fileName);
+
 			await item.updateContent(content);
 		}
 	}

@@ -8,13 +8,19 @@ import { appendExtensionUserAgent } from "vscode-azureextensionui";
 
 export class SimpleSearchClient {
 	private static readonly API_VERSION = "2021-04-30-Preview";
+
 	private readonly userAgent: string;
 
 	public static readonly DataSources: string = "datasources";
+
 	public static readonly Indexers: string = "indexers";
+
 	public static readonly Skillsets: string = "skillsets";
+
 	public static readonly SynonymMaps: string = "synonymmaps";
+
 	public static readonly Indexes: string = "indexes";
+
 	public static readonly Aliases: string = "aliases";
 
 	public constructor(
@@ -92,6 +98,7 @@ export class SimpleSearchClient {
 		if (!raw) {
 			this.fixupQueryResponse(r.data);
 		}
+
 		return r.data;
 	}
 
@@ -108,11 +115,13 @@ export class SimpleSearchClient {
 		if (!raw) {
 			this.fixupQueryResponse(r.data);
 		}
+
 		return r.data;
 	}
 
 	public async queryNext(nextLink: string): Promise<QueryResponse> {
 		let r = await this.httpGetUrl(nextLink);
+
 		this.fixupQueryResponse(r.data);
 
 		return r.data;
@@ -132,6 +141,7 @@ export class SimpleSearchClient {
 		createNew: boolean,
 	): Promise<void> {
 		const shallowCopy = { ...doc };
+
 		shallowCopy["@search.action"] = createNew ? "mergeOrUpload" : "merge";
 
 		const batch = { value: [shallowCopy] };
@@ -145,7 +155,9 @@ export class SimpleSearchClient {
 		key: any,
 	): Promise<void> {
 		const deletion: any = {};
+
 		deletion["@search.action"] = "delete";
+
 		deletion[keyName] = key;
 
 		const batch = { value: [deletion] };
@@ -163,6 +175,7 @@ export class SimpleSearchClient {
 			const r = await this.httpPost<
 				CollectionResponse<BatchResponseEntry>
 			>(`indexes/${indexName}/docs/index`, batch);
+
 			batchResponse = r.data;
 		} catch (error) {
 			throw new Error(
@@ -198,6 +211,7 @@ export class SimpleSearchClient {
 
 	private fixupQueryResponse(response: any) {
 		response.nextLink = response["@odata.nextLink"];
+
 		response.nextPageParameteres = response["@search.nextPageParameters"];
 	}
 
@@ -244,6 +258,7 @@ export class SimpleSearchClient {
 			if (etag) {
 				config.headers["if-match"] = etag;
 			}
+
 			return await Axios.put<T, R>(this.makeUrl(path), data, config);
 		} catch (error) {
 			throw new Error(this.extractErrorMessage(error));
@@ -289,22 +304,28 @@ interface NamedItem {
 
 interface BatchResponseEntry {
 	key: any;
+
 	status: boolean;
+
 	errorMessage: string;
+
 	statusCode: number;
 }
 
 export interface QueryResponse {
 	value: any[];
+
 	nextLink?: string | undefined;
 }
 
 export interface Index {
 	name: string;
+
 	fields: Field[];
 }
 
 export interface Field {
 	name: string;
+
 	key: boolean;
 }

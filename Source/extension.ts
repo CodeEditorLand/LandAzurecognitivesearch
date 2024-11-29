@@ -75,43 +75,56 @@ export async function activateInternal(
 		const { aiKey, name, version } = readJson(
 			context.asAbsolutePath("./package.json"),
 		);
+
 		reporter = new TelemetryReporter(name, version, aiKey);
+
 		ext.reporter = reporter;
+
 		context.subscriptions.push(reporter);
 	} catch (error) {}
 
 	ext.ui = new AzureUserInput(context.globalState);
+
 	ext.outputChannel = createAzExtOutputChannel(
 		"Azure Cognitive Search",
 		ext.prefix,
 	);
+
 	context.subscriptions.push(ext.outputChannel);
+
 	registerUIExtensionVariables(ext);
 
 	await callWithTelemetryAndErrorHandling(
 		"azureCognitiveSearch.activate",
 		async (activateContext: IActionContext) => {
 			activateContext.telemetry.properties.isActivationEvent = "true";
+
 			activateContext.telemetry.measurements.mainFileLoad =
 				(perfStats.loadEndTime - perfStats.loadStartTime) / 1000;
 
 			const azureAccountTreeItem = new AzureAccountTreeItem();
+
 			context.subscriptions.push(azureAccountTreeItem);
+
 			ext.tree = new AzExtTreeDataProvider(
 				azureAccountTreeItem,
 				"azureCognitiveSearch.loadMore",
 			);
+
 			ext.treeView = vscode.window.createTreeView(
 				"azureCognitiveSearch",
 				{ treeDataProvider: ext.tree },
 			);
+
 			context.subscriptions.push(ext.treeView);
 
 			const documentEditor = new DocumentEditor();
+
 			context.subscriptions.push(documentEditor);
 
 			const searchResultDocumentProvider =
 				new SearchResultDocumentProvider();
+
 			vscode.workspace.registerTextDocumentContentProvider(
 				"search",
 				searchResultDocumentProvider,
@@ -124,6 +137,7 @@ export async function activateInternal(
 					treeItem?: AzExtTreeItem,
 				) => ext.tree.refresh(treeItem),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.loadMore",
 				async (
@@ -131,11 +145,13 @@ export async function activateInternal(
 					treeItem: AzExtTreeItem,
 				) => await ext.tree.loadMore(treeItem, actionContext),
 			);
+
 			registerCommand("azureCognitiveSearch.selectSubscriptions", () =>
 				vscode.commands.executeCommand(
 					"azure-account.selectSubscriptions",
 				),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.openDocument",
 				async (
@@ -143,6 +159,7 @@ export async function activateInternal(
 					treeItem: IDocumentRepository,
 				) => await documentEditor.showEditor(treeItem),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createDocument",
 				async (
@@ -155,6 +172,7 @@ export async function activateInternal(
 						DocumentListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteDocument",
 				async (
@@ -167,6 +185,7 @@ export async function activateInternal(
 						DocumentTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createDataSource",
 				async (
@@ -179,6 +198,7 @@ export async function activateInternal(
 						DataSourceListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteDataSource",
 				async (
@@ -191,6 +211,7 @@ export async function activateInternal(
 						DataSourceListTreeItem.itemContextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createIndexer",
 				async (
@@ -203,6 +224,7 @@ export async function activateInternal(
 						IndexerListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteIndexer",
 				async (
@@ -215,6 +237,7 @@ export async function activateInternal(
 						IndexerListTreeItem.itemContextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createIndex",
 				async (
@@ -227,6 +250,7 @@ export async function activateInternal(
 						IndexListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteIndex",
 				async (
@@ -239,6 +263,7 @@ export async function activateInternal(
 						IndexListTreeItem.itemContextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createSkillset",
 				async (
@@ -251,6 +276,7 @@ export async function activateInternal(
 						SkillsetListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteSkillset",
 				async (
@@ -263,6 +289,7 @@ export async function activateInternal(
 						SkillsetListTreeItem.itemContextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createSynonymMap",
 				async (
@@ -275,6 +302,7 @@ export async function activateInternal(
 						SynonymMapListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteSynonymMap",
 				async (
@@ -287,6 +315,7 @@ export async function activateInternal(
 						SynonymMapListTreeItem.itemContextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createAlias",
 				async (
@@ -299,6 +328,7 @@ export async function activateInternal(
 						AliasListTreeItem.contextValue,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteAlias",
 				async (
@@ -324,6 +354,7 @@ export async function activateInternal(
 						searchResultDocumentProvider,
 					),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.openSearchEditor",
 				async (
@@ -331,6 +362,7 @@ export async function activateInternal(
 					treeItem: IndexTreeItem,
 				) => openSearchEditor(treeItem),
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.openInPortal",
 				async (
@@ -357,6 +389,7 @@ export async function activateInternal(
 					}
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.resetIndexer",
 				async (
@@ -381,6 +414,7 @@ export async function activateInternal(
 					}
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.runIndexer",
 				async (
@@ -405,6 +439,7 @@ export async function activateInternal(
 					}
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.copyAdminKey",
 				async (
@@ -423,9 +458,11 @@ export async function activateInternal(
 					}
 
 					await copyAdminKey(node);
+
 					vscode.window.showInformationMessage(message);
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.copyQueryKey",
 				async (
@@ -444,9 +481,11 @@ export async function activateInternal(
 					}
 
 					await copyQueryKey(node);
+
 					vscode.window.showInformationMessage(message);
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.createSearchService",
 				async (
@@ -464,11 +503,13 @@ export async function activateInternal(
 					await node.createChild(actionContext);
 				},
 			);
+
 			registerCommand(
 				"azureCognitiveSearch.deleteSearchService",
 				async (actionContext: IActionContext, node?: AzureTreeItem) => {
 					const suppressCreateContext: ITreeItemPickerContext =
 						actionContext;
+
 					suppressCreateContext.suppressCreatePick = true;
 
 					if (!node) {
@@ -547,6 +588,7 @@ async function createResource(
 	}
 
 	const item = await treeItem.createChild(actionContext);
+
 	await vscode.commands.executeCommand(
 		"azureCognitiveSearch.openDocument",
 		item,
@@ -606,6 +648,7 @@ async function search(
 	const doc = await vscode.workspace.openTextDocument(
 		vscode.Uri.parse(`search:${id}`),
 	);
+
 	await vscode.window.showTextDocument(doc);
 }
 
@@ -638,23 +681,36 @@ async function openSearchEditor(treeItem: IndexTreeItem): Promise<void> {
 	const filename = "sandbox-" + suffix + ".azs";
 
 	const localPath = path.join(os.tmpdir(), "vscode-azs-editor", filename);
+
 	await fse.ensureFile(localPath);
 
 	var template = "// Press ctrl+alt+r or cmd+option+r to search";
+
 	template += "\n\n";
+
 	template += "// You can send queries in the GET format\n";
+
 	template += "search=*";
+
 	template += "\n\n";
+
 	template += "// You can also send queries in the POST format\n";
+
 	template +=
 		"// Just be sure to highlight the entire request before searching\n";
+
 	template += "{\n";
+
 	template += '\t"search": "*"\n';
+
 	template += "}";
+
 	await fse.writeFile(localPath, template);
 
 	const doc = await vscode.workspace.openTextDocument(localPath);
+
 	vscode.languages.setTextDocumentLanguage(doc, "azurecognitivesearch");
+
 	await vscode.window.showTextDocument(doc);
 
 	ext.treeView.reveal(treeItem, { select: true });
@@ -679,6 +735,7 @@ async function searchToDocument(
 		ext.ui.showWarningMessage(
 			"Select an Azure Cognitive Search index from the left panel.",
 		);
+
 		await ext.treeView.reveal(root, { expand: true });
 	} else if (
 		ext.treeView.selection[0].contextValue !== "azureCognitiveSearchIndex"
@@ -696,6 +753,7 @@ async function searchToDocument(
 		} catch (error) {
 			ext.ui.showWarningMessage(error.message);
 		}
+
 		const id = documentProvider.registerContent(
 			JSON.stringify(result, undefined, 4),
 		);
@@ -703,16 +761,19 @@ async function searchToDocument(
 		const doc = await vscode.workspace.openTextDocument(
 			vscode.Uri.parse(`search:${id}`),
 		);
+
 		await vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
 	}
 }
 
 async function copyAdminKey(treeItem: SearchServiceTreeItem): Promise<void> {
 	let keys = await treeItem.getAdminKeys();
+
 	await vscode.env.clipboard.writeText(<string>keys.primaryKey);
 }
 
 async function copyQueryKey(treeItem: SearchServiceTreeItem): Promise<void> {
 	let keys = await treeItem.getQueryKey();
+
 	await vscode.env.clipboard.writeText(<string>keys.key);
 }

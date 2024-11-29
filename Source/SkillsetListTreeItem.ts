@@ -14,6 +14,7 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 export class SkillsetListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchSkillsetList";
+
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchSkillset";
 

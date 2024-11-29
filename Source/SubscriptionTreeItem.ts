@@ -38,7 +38,9 @@ import { nonNullProp } from "./utils/nonNull";
 
 export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 	private _nextLink: string | undefined;
+
 	public childTypeLabel: string = "Search Service";
+
 	public iconPath: { light: string | Uri; dark: string | Uri } = {
 		light: path.join(getResourcesPath(), "Subscriptions.svg"),
 		dark: path.join(getResourcesPath(), "Subscriptions.svg"),
@@ -60,6 +62,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
 		searchManagementClient.apiVersion = "2015-08-19";
+
 		addExtensionUserAgent(searchManagementClient);
 
 		const resourceManagementClient = createAzureClient(
@@ -72,6 +75,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 					filter: "resourceType eq 'Microsoft.Search/searchServices'",
 				})
 			: await resourceManagementClient.resources.listNext(this._nextLink);
+
 		this._nextLink = services.nextLink;
 
 		return this.createTreeItemsWithErrorHandling(
@@ -102,6 +106,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 
 		// This value can't be updated until we upgrade to @azure/arm-search as GET is no longer supported for ListQueryKeys in newer API versions and breaks azure-arm-search
 		searchManagementClient.apiVersion = "2015-08-19";
+
 		addExtensionUserAgent(searchManagementClient);
 
 		const wizardContext: ISearchServiceWizardContext = Object.assign(
@@ -117,6 +122,7 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 				new SearchServiceReplicaStep(),
 				new SearchServicePartitionStep(),
 			];
+
 		LocationListStep.addStep(wizardContext, promptSteps);
 
 		const wizard = new AzureWizard(wizardContext, {
@@ -131,7 +137,9 @@ export class SubscriptionTreeItem extends SubscriptionTreeItemBase {
 			wizardContext,
 			"newServiceName",
 		);
+
 		context.showCreatingTreeItem(newServiceName);
+
 		await wizard.execute();
 
 		const newSearchService: SearchService = nonNullProp(

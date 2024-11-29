@@ -19,12 +19,19 @@ export class DocumentTreeItem
 {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchDocument";
+
 	public readonly contextValue: string = DocumentTreeItem.contextValue;
+
 	public readonly commandId: string = "azureCognitiveSearch.openDocument";
+
 	public label: string;
+
 	readonly namePrefix: string;
+
 	readonly itemName: string;
+
 	readonly itemKind: string = "document";
+
 	readonly extension: string = "json";
 
 	public constructor(
@@ -34,8 +41,11 @@ export class DocumentTreeItem
 		public key: any,
 	) {
 		super(parent);
+
 		this.label = key || "<new document>";
+
 		this.namePrefix = `${this.searchServiceName}-${this.index.name}`;
+
 		this.itemName = key;
 	}
 
@@ -71,8 +81,11 @@ export class DocumentTreeItem
 
 		if (!this.key) {
 			const keyField = <Field>this.index.fields.find((f) => f.key);
+
 			this.key = doc[keyField.name];
+
 			this.label = this.key;
+
 			this.refresh();
 		}
 	}
@@ -80,6 +93,7 @@ export class DocumentTreeItem
 	public async deleteTreeItemImpl?(_context: IActionContext): Promise<void> {
 		if (this.key) {
 			const keyField = <Field>this.index.fields.find((f) => f.key);
+
 			await this.searchClient.deleteDocument(
 				this.index.name,
 				keyField.name,
@@ -121,6 +135,7 @@ export class DocumentTreeItem
 				jsonSchema[field.name] = null;
 			}
 		}
+
 		return jsonSchema;
 	}
 }

@@ -16,6 +16,7 @@ export class SearchServiceSkuStep extends AzureWizardPromptStep<ISearchServiceWi
 		wizardContext: ISearchServiceWizardContext,
 	): Promise<void> {
 		const placeHolder: string = "Select the SKU for your search service";
+
 		wizardContext.sku = (
 			await ext.ui.showQuickPick(this.getPicks(wizardContext), {
 				placeHolder,

@@ -21,8 +21,11 @@ import { Index, SimpleSearchClient } from "./SimpleSearchClient";
 
 export class IndexTreeItem extends AzureParentTreeItem {
 	public static readonly contextValue: string = "azureCognitiveSearchIndex";
+
 	public readonly contextValue: string = IndexTreeItem.contextValue;
+
 	public readonly label: string;
+
 	public readonly itemKind: string = "index";
 
 	public constructor(
@@ -31,6 +34,7 @@ export class IndexTreeItem extends AzureParentTreeItem {
 		private readonly index: Index,
 	) {
 		super(parent);
+
 		this.label = index.name;
 	}
 

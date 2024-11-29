@@ -52,6 +52,7 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 		);
 
 		const creatingSearchService: string = `Creating search serivce "${newServiceName}" in location "${locationName}" with sku "${skuName}"...`;
+
 		ext.outputChannel.appendLog(creatingSearchService);
 
 		const searchManagementClient: SearchManagementClient =
@@ -72,6 +73,7 @@ export class SearchServiceCreateStep<T extends ISearchServiceWizardContext>
 			);
 
 		const createdSearchService: string = `Successfully created search service "${newServiceName}".`;
+
 		ext.outputChannel.appendLog(createdSearchService);
 	}
 

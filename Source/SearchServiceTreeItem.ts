@@ -32,11 +32,15 @@ import { SynonymMapListTreeItem } from "./SynonymMapListTreeItem";
 
 export class SearchServiceTreeItem extends AzureParentTreeItem {
 	public static contextValue: string = "azureCognitiveSearchService";
+
 	public readonly contextValue: string = SearchServiceTreeItem.contextValue;
+
 	public label: string = isNullOrUndefined(this.searchService.name)
 		? "InvalidSearchService"
 		: this.searchService.name;
+
 	public resourceGroup: string;
+
 	public name: string;
 
 	public constructor(
@@ -45,7 +49,9 @@ export class SearchServiceTreeItem extends AzureParentTreeItem {
 		public readonly searchManagementClient: SearchManagementClient,
 	) {
 		super(parent);
+
 		this.resourceGroup = (<string>this.searchService.id).split("/")[4];
+
 		this.name = <string>this.searchService.name;
 	}
 

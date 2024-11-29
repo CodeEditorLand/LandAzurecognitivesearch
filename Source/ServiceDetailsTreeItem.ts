@@ -16,11 +16,17 @@ export class ServiceDetailsTreeItem
 	implements IDocumentRepository
 {
 	public readonly commandId: string = "azureCognitiveSearch.openDocument";
+
 	public readonly contextValue: string = "azureCognitiveSearchServiceDetails";
+
 	public readonly label: string = "Service Details";
+
 	public readonly namePrefix: string;
+
 	readonly itemName: string;
+
 	readonly itemKind: string = "service";
+
 	readonly extension: string = "azssvc";
 
 	public constructor(
@@ -28,7 +34,9 @@ export class ServiceDetailsTreeItem
 		private readonly searchService: SearchService,
 	) {
 		super(parent);
+
 		this.itemName = searchService.name || "";
+
 		this.namePrefix = `service-${searchService.name}`;
 	}
 

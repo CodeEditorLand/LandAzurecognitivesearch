@@ -27,6 +27,7 @@ export class SearchServiceNameStep<
 		const suggestedName: string | undefined = wizardContext.relatedNameTask
 			? await wizardContext.relatedNameTask
 			: undefined;
+
 		wizardContext.newServiceName = (
 			await ext.ui.showInputBox({
 				value: suggestedName,

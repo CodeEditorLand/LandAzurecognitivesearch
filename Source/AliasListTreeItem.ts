@@ -14,6 +14,7 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 export class AliasListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchAliasList";
+
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchAlias";
 

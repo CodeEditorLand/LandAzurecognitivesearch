@@ -14,6 +14,7 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 export class IndexerListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchIndexerList";
+
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchIndexer";
 

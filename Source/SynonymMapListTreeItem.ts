@@ -14,6 +14,7 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 export class SynonymMapListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchSynonymMapList";
+
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchSynonymMap";
 

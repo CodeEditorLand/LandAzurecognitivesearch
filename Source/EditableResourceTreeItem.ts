@@ -20,7 +20,9 @@ export class EditableResourceTreeItem
 	implements IDocumentRepository
 {
 	public readonly commandId: string = "azureCognitiveSearch.openDocument";
+
 	public readonly namePrefix: string;
+
 	public label: string;
 
 	public constructor(
@@ -35,7 +37,9 @@ export class EditableResourceTreeItem
 		label?: string,
 	) {
 		super(parent);
+
 		this.namePrefix = `${itemSet}-${itemName}`;
+
 		this.label = label || this.itemName;
 
 		if (itemKind === "indexer") {
@@ -94,7 +98,9 @@ export class EditableResourceTreeItem
 			this.itemSet,
 			this.itemName,
 		);
+
 		delete r.content["@odata.context"];
+
 		delete r.content["@odata.etag"];
 
 		return r;
@@ -109,8 +115,11 @@ export class EditableResourceTreeItem
 				this.itemSet,
 				content,
 			);
+
 			this.creating = false;
+
 			this.itemName = created.content.name;
+
 			this.label = created.content.name;
 
 			// refreshing the parent to get index properly added to tree

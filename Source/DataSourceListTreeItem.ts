@@ -14,6 +14,7 @@ import { SimpleSearchClient } from "./SimpleSearchClient";
 export class DataSourceListTreeItem extends SearchResourceListTreeItem {
 	public static readonly contextValue: string =
 		"azureCognitiveSearchDataSourceList";
+
 	public static readonly itemContextValue: string =
 		"azureCognitiveSearchDataSource";
 
